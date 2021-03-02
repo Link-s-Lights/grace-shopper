@@ -1,18 +1,37 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {
+  User,
+  ShippingAddress,
+  Product,
+  Attribute,
+  ProductAttribute
+} = require('../server/db/models')
+
+const userSeed = require('../seedfiles/users')
+const addressSeed = require('../seedfiles/shippingAddresses')
+const productSeed = require('../seedfiles/products')
+const attributeSeed = require('../seedfiles/attributes')
+const productAttSeed = require('../seedfiles/productAttributes')
+
+console.log('seed file:', productAttSeed)
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
-
+  const users = await User.bulkCreate(userSeed)
   console.log(`seeded ${users.length} users`)
+  const shippingAddresses = await ShippingAddress.bulkCreate(addressSeed)
+  console.log(`seeded ${shippingAddresses.length} addresses`)
+  const products = await Product.bulkCreate(productSeed)
+  console.log(`seeded ${products.length} products`)
+  const attributes = await Attribute.bulkCreate(attributeSeed)
+  console.log(`seeded ${attributes.length} attributes`)
+  const productAttributes = await ProductAttribute.bulkCreate(productAttSeed)
+  console.log(`seeded ${productAttributes.length} product attributes`)
+
   console.log(`seeded successfully`)
 }
 
