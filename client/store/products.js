@@ -5,7 +5,6 @@ import history from '../history'
 const GET_PRODUCTS = 'GET_PRODUCTS'
 const CREATE_PRODUCT = 'CREATE_PRODUCT'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
-// const UPDATE_PRODUCT = 'UPDATE_PRODUCT'
 
 //INITIAL STATE
 const defaultProducts = {}
@@ -31,13 +30,6 @@ const deleteActionProduct = product => {
     product
   }
 }
-
-// const updateActionProduct = (product) => {
-//   return {
-//     type: UPDATE_PRODUCT,
-//     product,
-//   }
-// }
 
 //THUNK CREATORS
 
@@ -75,34 +67,16 @@ export const deleteProduct = (product, history) => {
     }
   }
 }
-
-// export const updateProduct = (product, history) => {
-//   return async (dispatch) => {
-//     try {
-//       const {data} = await axios.put(`/api/products/${product.id}`, product)
-//       dispatch(updateActionProduct(data))
-//       //ASSIGN CORRECT HISTORY PUSH METHOD HERE
-//     } catch (err) {
-//       console.log(err)
-//     }
-//   }
-// }
-
 //REDUCER
 
-export default function productsReducer(state = defaultProducts, action) {
+export default function(state = defaultProducts, action) {
   switch (action.type) {
     case GET_PRODUCTS:
-      return {...state, products: action.products}
+      return action.products
     case CREATE_PRODUCT:
-      return {...state, product: action.product}
+      return [...state, action.product]
     case DELETE_PRODUCT:
-      return {
-        ...state,
-        product: state.products.filter(
-          product => product.id !== action.product.id
-        )
-      }
+      return state.filter(product => product.id !== action.product.id)
     default:
       return state
   }

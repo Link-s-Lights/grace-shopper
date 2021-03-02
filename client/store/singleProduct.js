@@ -2,23 +2,15 @@ import axios from 'axios'
 import history from '../history'
 
 //ACTION TYPES
-const GET_SINGLE_PRODUCT = 'GET_PRODUCT'
-const UPDATE_SINGLE_PRODUCT = 'UPDATE_PRODUCT'
+const SET_SINGLE_PRODUCT = 'SET_SINGLE_PRODUCT'
 
 //INITIAL STATE
 const defaultSingleProduct = {}
 
 //ACTION CREATORS
-const getActionSingleProduct = product => {
+const setActionSingleProduct = product => {
   return {
-    type: GET_SINGLE_PRODUCT,
-    product
-  }
-}
-
-const updateActionProduct = product => {
-  return {
-    type: UPDATE_SINGLE_PRODUCT,
+    type: SET_SINGLE_PRODUCT,
     product
   }
 }
@@ -27,8 +19,8 @@ const updateActionProduct = product => {
 export const getSingleProduct = product => {
   return async dispatch => {
     try {
-      // const {data} = await axios.get(`/api/${product.id}`)
-      // dispatch(updateActionProduct(data))
+      const {data} = await axios.get(`/api/products/${product.id}`)
+      dispatch(setActionSingleProduct(data))
     } catch (err) {
       console.log(err)
     }
@@ -38,9 +30,9 @@ export const getSingleProduct = product => {
 export const updateProduct = (product, history) => {
   return async dispatch => {
     try {
-      // const {data} = await axios.put(`/api/products/${product.id}`, product)
-      // dispatch(updateActionProduct(data))
-      // history.push(`/${product.id}`)
+      const {data} = await axios.put(`/api/products/${product.id}`, product)
+      dispatch(setActionSingleProduct(data))
+      history.push(`/products/${product.id}`)
     } catch (err) {
       console.log(err)
     }
@@ -49,15 +41,10 @@ export const updateProduct = (product, history) => {
 
 //REDUCER
 
-export default function singleProductReducer(
-  state = defaultSingleProduct,
-  action
-) {
+export default function(state = defaultSingleProduct, action) {
   switch (action.type) {
-    case GET_SINGLE_PRODUCT:
-      return {...state, singleProduct: action.product}
-    case UPDATE_SINGLE_PRODUCT:
-      return {...state}
+    case SET_SINGLE_PRODUCT:
+      return action.product
     default:
       return state
   }
