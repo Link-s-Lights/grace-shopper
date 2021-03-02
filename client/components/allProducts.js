@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import setProducts from '../store/products'
+import {setProducts} from '../store/products'
 
 export class AllProducts extends React.Component {
   async componentDidMount() {
