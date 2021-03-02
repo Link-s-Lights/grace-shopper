@@ -16,25 +16,9 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => {
-  return {
-    type: GET_USER,
-    user
-  }
-}
-
-const removeUser = () => {
-  return {
-    type: REMOVE_USER
-  }
-}
-
-const createUser = user => {
-  return {
-    type: CREATE_USER,
-    user
-  }
-}
+const getUser = user => ({type: GET_USER, user})
+const removeUser = () => ({type: REMOVE_USER})
+const createUser = user => ({type: CREATE_USER, user})
 
 /**
  * THUNK CREATORS
@@ -87,16 +71,15 @@ export const createMe = (user, history) => async dispatch => {
 /**
  * REDUCER
  */
-export default function userReducer(state = defaultUser, action) {
+export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
-      return {...state, user: action.user}
-    case REMOVE_USER:
-      //CHECK ON REMOVAL OF USERS
-      return defaultUser
-    case CREATE_USER:
       return action.user
+    case REMOVE_USER:
+      return defaultUser
     default:
       return state
   }
 }
+
+//ADD A CREATE USER TO REDUCER

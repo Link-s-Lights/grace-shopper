@@ -27,8 +27,8 @@ const updateActionProduct = product => {
 export const getSingleProduct = product => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`/api/${product.id}`)
-      dispatch(updateActionProduct(data))
+      // const {data} = await axios.get(`/api/${product.id}`)
+      // dispatch(updateActionProduct(data))
     } catch (err) {
       console.log(err)
     }
@@ -38,9 +38,9 @@ export const getSingleProduct = product => {
 export const updateProduct = (product, history) => {
   return async dispatch => {
     try {
-      const {data} = await axios.put(`/api/products/${product.id}`, product)
-      dispatch(updateActionProduct(data))
-      history.push(`/${product.id}`)
+      // const {data} = await axios.put(`/api/products/${product.id}`, product)
+      // dispatch(updateActionProduct(data))
+      // history.push(`/${product.id}`)
     } catch (err) {
       console.log(err)
     }
@@ -56,6 +56,8 @@ export default function singleProductReducer(
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
       return {...state, singleProduct: action.product}
+    case UPDATE_SINGLE_PRODUCT:
+      return {...state}
     default:
       return state
   }
