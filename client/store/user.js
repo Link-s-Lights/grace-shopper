@@ -6,6 +6,7 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const CREATE_USER = 'CREATE_USER'
 
 /**
  * INITIAL STATE
@@ -15,8 +16,25 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+const getUser = user => {
+  return {
+    type: GET_USER,
+    user
+  }
+}
+
+const removeUser = () => {
+  return {
+    type: REMOVE_USER
+  }
+}
+
+const createUser = user => {
+  return {
+    type: CREATE_USER,
+    user
+  }
+}
 
 /**
  * THUNK CREATORS
@@ -55,6 +73,16 @@ export const logout = () => async dispatch => {
     console.error(err)
   }
 }
+//CHECK API ROUTE TO THIS THUNK
+export const createMe = (user, history) => async dispatch => {
+  try {
+    const {data} = await axios.post('/api/users', user)
+    dispatch(createUser(data))
+    history.push('/users')
+  } catch (err) {
+    console.err(err)
+  }
+}
 
 /**
  * REDUCER
@@ -62,9 +90,12 @@ export const logout = () => async dispatch => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
-      return action.user
+      return {...state, user: action.user}
     case REMOVE_USER:
+      //CHECK ON REMOVAL OF USERS
       return defaultUser
+    case CREATE_USER:
+      return action.user
     default:
       return state
   }
