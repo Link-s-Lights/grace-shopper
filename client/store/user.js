@@ -15,8 +15,17 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+const getUser = user => {
+  return {
+    type: GET_USER,
+    user
+  }
+}
+const removeUser = () => {
+  return {
+    type: REMOVE_USER
+  }
+}
 
 /**
  * THUNK CREATORS
