@@ -2,17 +2,17 @@ import axios from 'axios'
 import history from '../history'
 
 //ACTIONS TYPES
-const GET_PRODUCTS = 'GET_PRODUCTS'
+const SET_PRODUCTS = 'SET_PRODUCTS'
 const CREATE_PRODUCT = 'CREATE_PRODUCT'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 //INITIAL STATE
-const defaultProducts = {}
+const initialState = []
 
 //ACTION CREATORS
 const getActionProducts = products => {
   return {
-    type: GET_PRODUCTS,
+    type: SET_PRODUCTS,
     products
   }
 }
@@ -33,13 +33,13 @@ const deleteActionProduct = product => {
 
 //THUNK CREATORS
 
-export const getProducts = () => {
+export const setProducts = () => {
   return async dispatch => {
     try {
       const {data} = await axios.get('/api/products')
       dispatch(getActionProducts(data))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }
@@ -59,7 +59,7 @@ export const createProduct = (product, history) => {
 export const deleteProduct = (product, history) => {
   return async dispatch => {
     try {
-      await axios.delete('/api/products', product)
+      await axios.delete(`/api/products/${product.id}`, product)
       dispatch(deleteActionProduct(product))
       history.push('/products')
     } catch (err) {
@@ -69,9 +69,9 @@ export const deleteProduct = (product, history) => {
 }
 //REDUCER
 
-export default function(state = defaultProducts, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_PRODUCTS:
+    case SET_PRODUCTS:
       return action.products
     case CREATE_PRODUCT:
       return [...state, action.product]
