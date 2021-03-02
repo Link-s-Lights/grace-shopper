@@ -6,7 +6,10 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   },
   password: {
     type: Sequelize.STRING,
@@ -26,6 +29,25 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  fname: {
+    type: Sequelize.STRING
+  },
+  lname: {
+    type: Sequelize.STRING
+  },
+  type: {
+    type: Sequelize.STRING,
+    defaultValue: 'user',
+    validate: {
+      isIn: [['user', 'admin']]
+    }
+  },
+  phone: {
+    type: Sequelize.STRING
+  },
+  imageUrl: {
+    type: Sequelize.TEXT
   }
 })
 
