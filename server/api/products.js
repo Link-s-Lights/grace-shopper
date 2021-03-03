@@ -72,14 +72,17 @@ router.put('/:id', async (req, res, next) => {
         plain: true
       }
     )
+    console.log('NUM AFFECT', numberOfAffectedRows)
     const updatedProduct = affectedRows
+    console.log('AFF PRODUCT', affectedRows)
     bulkCreateAssociations(updatedProduct.id, req.body.attributes)
     updatedProduct ? res.json(updatedProduct) : res.sendStatus(304)
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })
-
+//test
 router.delete('/:id', async (req, res, next) => {
   try {
     await Product.destroy({where: {id: req.user.id}})
