@@ -72,13 +72,10 @@ export const deleteProduct = (product, history) => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_PRODUCTS:
-      // return action.products
       return {...state, loading: false, products: action.products}
     case CREATE_PRODUCT:
-      // return [...state, action.product]
       return {...state, loading: false, product: action.product}
     case DELETE_PRODUCT:
-      // return state.filter((product) => product.id !== action.product.id)
       return {
         ...state,
         loading: false,
