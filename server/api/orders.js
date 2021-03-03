@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const {Order, ShippingAddress} = require('../db/models')
 module.exports = router
-
+//test
 router.get('/', async (req, res, next) => {
   try {
     if (req.user.type === 'admin') {
