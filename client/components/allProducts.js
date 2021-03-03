@@ -8,7 +8,7 @@ export class AllProducts extends React.Component {
     await this.props.getMyProducts()
   }
   render() {
-    const productsArray = this.props.products
+    const productsArray = this.props.products.products
     if (productsArray) {
       return (
         <div>

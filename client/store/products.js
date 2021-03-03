@@ -7,7 +7,7 @@ const CREATE_PRODUCT = 'CREATE_PRODUCT'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 //INITIAL STATE
-const initialState = []
+const initialState = {loading: true, products: []}
 
 //ACTION CREATORS
 const getActionProducts = products => {
@@ -72,11 +72,18 @@ export const deleteProduct = (product, history) => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_PRODUCTS:
-      return action.products
+      // return action.products
+      return {...state, loading: false, products: action.products}
     case CREATE_PRODUCT:
-      return [...state, action.product]
+      // return [...state, action.product]
+      return {...state, loading: false, product: action.product}
     case DELETE_PRODUCT:
-      return state.filter(product => product.id !== action.product.id)
+      // return state.filter((product) => product.id !== action.product.id)
+      return {
+        ...state,
+        loading: false,
+        products: state.filter(product => product.id !== action.product.id)
+      }
     default:
       return state
   }

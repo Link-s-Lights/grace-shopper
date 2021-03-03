@@ -7,7 +7,6 @@ export class SingleProduct extends React.Component {
     await this.props.getMySingleProduct(this.props.match.params)
   }
   render() {
-    console.log('SINGLE P PROPS', this.props.singleProduct)
     const product = this.props.singleProduct
     return (
       <div>
