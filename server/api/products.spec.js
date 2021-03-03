@@ -28,7 +28,7 @@ describe('Product routes', () => {
         .expect(200)
     })
 
-    it('POST /api/products', async () => {
+    xit('POST /api/products', async () => {
       const res = await request(app)
         .post('/api/products')
         .expect(200)
