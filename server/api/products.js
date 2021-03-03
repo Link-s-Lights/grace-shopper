@@ -2,6 +2,7 @@ const router = require('express').Router()
 const {Product, Attribute, ProductAttribute} = require('../db/models')
 module.exports = router
 
+// TODO: Abstract to other file
 const bulkCreateAssociations = async (productId, attributes) => {
   const allAttributes = await Promise.all(
     attributes.map(attribute => {

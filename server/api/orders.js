@@ -23,6 +23,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    const {blah, blahblah} = req.body
     const newOrder = await Order.create(req.body)
     newOrder.setShippingAddress(req.body.shippingAddress)
     res.json(newOrder)
