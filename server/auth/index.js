@@ -44,9 +44,15 @@ router.get('/me', (req, res) => {
 
 router.put('/me', async (req, res, next) => {
   try {
+    const {email, password, fname, lname, phone, imageUrl} = req.body
     const [numberOfAffectedRows, affectedRows] = await User.update(
       {
-        ...req.body
+        email,
+        password,
+        fname,
+        lname,
+        phone,
+        imageUrl
       },
       {
         where: {id: req.user.id},
