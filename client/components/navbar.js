@@ -7,8 +7,10 @@ import allProducts from './allProducts'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>Link's Lights</h1>
-    <nav>
+    <div>
+      <h1 className="links-lights-title">Link's Lights</h1>
+    </div>
+    <nav className="navbar navbar-light bg-light">
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}

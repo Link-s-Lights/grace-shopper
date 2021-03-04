@@ -1,0 +1,18 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+// Add custom code after this
+
+// Your variable overrides
+$body-bg: #000;
+$body-color: #111;
+
+// Bootstrap and its default variables
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+$test: red;
+body {
+  background-color: $test;
+}
