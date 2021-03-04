@@ -44,7 +44,7 @@ class Cart extends React.Component {
     const {lineItems} = this.props.cart
     return (
       <div>
-        <table>
+        <table className="table table-hover">
           <tbody>
             <tr>
               <th>Product Name</th>
@@ -68,7 +68,11 @@ class Cart extends React.Component {
                 <td>{item.price}</td>
                 <td>{item.qty * item.price}</td>
                 <td>
-                  <a id={idx} onClick={this.handleRemove}>
+                  <a
+                    id={idx}
+                    onClick={this.handleRemove}
+                    className="btn btn-danger"
+                  >
                     X
                   </a>
                 </td>
