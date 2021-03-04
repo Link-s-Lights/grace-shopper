@@ -117,6 +117,9 @@ export const updateOrder = (order, history) => {
 
 export const saveCart = async () => {
   const {user, cart} = store.getState()
+  console.log('in save')
+  console.log('current cart: ', cart)
+  console.log('JSON: ', JSON.stringify(cart))
   if (user.id) {
     try {
       const {data} = await axios.put(`/api/orders/${order.id}`, cart)
@@ -151,7 +154,12 @@ export default function(state = initialCart, action) {
     case EMPTY_CART:
       return initialCart
     case REMOVE_ITEM:
-      return {...state, lineItems: state.lineItems.slice(action.idx, 1)}
+      let splicedArray = state.lineItems
+      splicedArray.splice(action.idx, 1)
+      return {
+        ...state,
+        lineItems: splicedArray
+      }
     case UPDATE_QTY:
       let newLineItems = [...state.lineItems]
       newLineItems[action.idx].qty = action.qty

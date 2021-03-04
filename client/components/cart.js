@@ -16,6 +16,8 @@ for (let i = 1; i <= 10; i++) {
 class Cart extends React.Component {
   constructor(props) {
     super(props)
+    this.updateQty = this.updateQty.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
   }
   async saveCart() {
     try {
@@ -39,6 +41,7 @@ class Cart extends React.Component {
   }
 
   render() {
+    const {lineItems} = this.props.cart
     return (
       <div>
         <table>
@@ -50,16 +53,11 @@ class Cart extends React.Component {
               <th>Total</th>
               <th>remove</th>
             </tr>
-            {this.props.cart.lineItems.map((item, idx) => (
+            {lineItems.map((item, idx) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>
-                  <select
-                    id={idx}
-                    onChange={updatedQty}
-                    value={item.qty}
-                    size={Math.min(10, item.stock)}
-                  >
+                  <select id={idx} onChange={this.updateQty} value={item.qty}>
                     {selectArray.map((x, i) => (
                       <option value={x} key={i}>
                         {x}
@@ -78,6 +76,8 @@ class Cart extends React.Component {
             ))}
           </tbody>
         </table>
+        Subtotal:{' '}
+        {lineItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
       </div>
     )
   }
