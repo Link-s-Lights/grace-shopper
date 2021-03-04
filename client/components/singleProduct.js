@@ -7,6 +7,7 @@ export class SingleProduct extends React.Component {
   constructor(props) {
     super(props)
     this.handleAdd = this.handleAdd.bind(this)
+    this.isInStock = this.isInStock.bind(this)
   }
   async componentDidMount() {
     await this.props.getMySingleProduct(this.props.match.params)
@@ -15,16 +16,24 @@ export class SingleProduct extends React.Component {
     this.props.addToCart(this.props.singleProduct)
     this.props.history.push('/cart')
   }
+  isInStock(product) {
+    if (product.stock <= 0) {
+      return 'Out Of Stock'
+    }
+  }
   render() {
     if (this.props.loading === false) {
       const product = this.props.singleProduct
       return (
-        <div>
+        <div className="jumbotron">
           <h1>{product.name}</h1>
           <p>{product.description}</p>
           <h2>${product.price}</h2>
-          <h2>Stock: {product.stock}</h2>
-          <button onClick={this.handleAdd}>Add to cart</button>
+          {/* <h2>Stock: {product.stock}</h2> */}
+          <h2>{this.isInStock(product)}</h2>
+          <button onClick={this.handleAdd} className="btn btn-info btn-lg">
+            Add to cart
+          </button>
         </div>
       )
     } else {

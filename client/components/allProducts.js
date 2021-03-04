@@ -4,8 +4,17 @@ import {setProducts} from '../store/products'
 import {Link} from 'react-router-dom'
 
 export class AllProducts extends React.Component {
+  constructor() {
+    super()
+    this.isInStock = this.isInStock.bind(this)
+  }
   async componentDidMount() {
     await this.props.getMyProducts()
+  }
+  isInStock(product) {
+    if (product.stock <= 0) {
+      return 'Out Of Stock'
+    }
   }
   render() {
     const productsArray = this.props.products
@@ -17,13 +26,23 @@ export class AllProducts extends React.Component {
             <div className="row row-cols-3">
               {productsArray.map(product => {
                 return (
-                  <div key={product.id} className="col black-border">
-                    <Link to={`/products/${product.id}`}>
-                      <h1>{product.name}</h1>
-                    </Link>
-                    <p>{product.description}</p>
-                    <h2>${product.price}</h2>
-                    <h2>Stock: {product.stock}</h2>
+                  <div key={product.id} className="col card">
+                    <div className="card-body">
+                      <Link to={`/products/${product.id}`}>
+                        <img
+                          className="card-img-top"
+                          src="https://i.imgur.com/3jnETNw.png"
+                          alt="Card image cap"
+                        />
+                        <h1 className="card-title">{product.name}</h1>
+                      </Link>
+                      {/* <p>{product.description}</p> */}
+                      <h2>${product.price}</h2>
+                      {/* <h2>Stock: {product.stock}</h2> */}
+                      <h2 className="out-of-stock">
+                        {this.isInStock(product)}
+                      </h2>
+                    </div>
                   </div>
                 )
               })}
