@@ -42,4 +42,38 @@ router.get('/me', (req, res) => {
   res.json(req.user)
 })
 
+router.put('/me', async (req, res, next) => {
+  try {
+    const {email, password, fname, lname, phone, imageUrl} = req.body
+    const [numberOfAffectedRows, affectedRows] = await User.update(
+      {
+        email,
+        password,
+        fname,
+        lname,
+        phone,
+        imageUrl
+      },
+      {
+        where: {id: req.user.id},
+        returning: true,
+        plain: true
+      }
+    )
+    const updatedUser = affectedRows[0]
+    numberOfAffectedRows ? res.json(updatedUser) : res.sendStatus(304)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/me', async (req, res, next) => {
+  try {
+    await User.destroy({where: {id: req.user.id}})
+    res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.use('/google', require('./google'))

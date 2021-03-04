@@ -1,4 +1,12 @@
 const User = require('./user')
+const Attribute = require('./attributes')
+const OrderProduct = require('./orderProducts')
+const Order = require('./orders')
+const ProductAttribute = require('./productAttributes')
+const ProductGroup = require('./productGroups')
+const Product = require('./products')
+const ShippingAddress = require('./shippingAddresses')
+const Variation = require('./variation')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -13,6 +21,39 @@ const User = require('./user')
  * for example, we can say: const {User} = require('../db/models')
  * instead of: const User = require('../db/models/user')
  */
+User.hasMany(ShippingAddress)
+ShippingAddress.belongsTo(User)
+User.hasMany(Order)
+Order.belongsTo(User)
+Order.hasOne(ShippingAddress)
+Order.belongsToMany(Product, {through: OrderProduct})
+Product.belongsToMany(Order, {through: OrderProduct})
+Attribute.belongsToMany(Product, {through: ProductAttribute})
+Product.belongsToMany(Attribute, {through: ProductAttribute})
+Variation.belongsToMany(Product, {through: ProductGroup})
+Product.belongsToMany(Variation, {through: ProductGroup})
+
+Order.prototype.calculateTotals = () => {
+  let order = this
+  return this.getProducts()
+    .then(lineItems => lineItems.map(lineItem => lineItem.totalPrice))
+    .then(lineItemTotals =>
+      lineItemTotals.reduce((total, value) => total + value, 0)
+    )
+    .then(total => {
+      instance.dataValues.total = total
+      return instance
+    })
+}
+
 module.exports = {
-  User
+  User,
+  Attribute,
+  OrderProduct,
+  Order,
+  ProductAttribute,
+  ProductGroup,
+  Product,
+  ShippingAddress,
+  Variation
 }
