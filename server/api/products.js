@@ -2,6 +2,7 @@ const router = require('express').Router()
 const {Product, Attribute, ProductAttribute} = require('../db/models')
 module.exports = router
 
+// TODO: Abstract to other file
 const bulkCreateAssociations = async (productId, attributes) => {
   const allAttributes = await Promise.all(
     attributes.map(attribute => {
@@ -72,14 +73,17 @@ router.put('/:id', async (req, res, next) => {
         plain: true
       }
     )
+    console.log('NUM AFFECT', numberOfAffectedRows)
     const updatedProduct = affectedRows
+    console.log('AFF PRODUCT', affectedRows)
     bulkCreateAssociations(updatedProduct.id, req.body.attributes)
     updatedProduct ? res.json(updatedProduct) : res.sendStatus(304)
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })
-
+//test
 router.delete('/:id', async (req, res, next) => {
   try {
     await Product.destroy({where: {id: req.user.id}})

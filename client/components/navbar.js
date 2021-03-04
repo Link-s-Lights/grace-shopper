@@ -17,7 +17,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <a href="#" onClick={handleClick}>
             Logout
           </a>
-          <Route exact path="/products" component={allProducts} />
+          {/* <Route exact path="/products" component={allProducts} /> */}
         </div>
       ) : (
         <div>
