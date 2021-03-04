@@ -35,7 +35,15 @@ router.get('/', async (req, res, next) => {
 // TODO: create productOrder associations *create/use utility functions
 router.post('/', async (req, res, next) => {
   try {
-    const newOrder = await Order.create(req.body)
+    const {status, tax, shippingCost, discountCode, discountAmt} = req.body
+    const newOrder = await Order.create({
+      status,
+      tax,
+      shippingCost,
+      discountCode,
+      discountAmt
+    })
+    newOrder.setUser(req.user)
     newOrder.setShippingAddress(req.body.shippingAddress)
     res.json(newOrder)
   } catch (err) {

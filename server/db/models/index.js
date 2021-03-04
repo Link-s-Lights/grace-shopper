@@ -8,19 +8,6 @@ const Product = require('./products')
 const ShippingAddress = require('./shippingAddresses')
 const Variation = require('./variation')
 
-/**
- * If we had any associations to make, this would be a great place to put them!
- * ex. if we had another model called BlogPost, we might say:
- *
- *    BlogPost.belongsTo(User)
- */
-
-/**
- * We'll export all of our models here, so that any time a module needs a model,
- * we can just require it from 'db/models'
- * for example, we can say: const {User} = require('../db/models')
- * instead of: const User = require('../db/models/user')
- */
 User.hasMany(ShippingAddress)
 ShippingAddress.belongsTo(User)
 User.hasMany(Order)
@@ -32,19 +19,6 @@ Attribute.belongsToMany(Product, {through: ProductAttribute})
 Product.belongsToMany(Attribute, {through: ProductAttribute})
 Variation.belongsToMany(Product, {through: ProductGroup})
 Product.belongsToMany(Variation, {through: ProductGroup})
-
-Order.prototype.calculateTotals = () => {
-  let order = this
-  return this.getProducts()
-    .then(lineItems => lineItems.map(lineItem => lineItem.totalPrice))
-    .then(lineItemTotals =>
-      lineItemTotals.reduce((total, value) => total + value, 0)
-    )
-    .then(total => {
-      instance.dataValues.total = total
-      return instance
-    })
-}
 
 module.exports = {
   User,

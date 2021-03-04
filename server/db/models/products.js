@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
+const {convertToDollars, convertToPennies} = require('./utility')
 
 const Product = db.define('product', {
   name: {
@@ -11,7 +12,7 @@ const Product = db.define('product', {
     type: Sequelize.TEXT
   },
   price: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   stock: {
@@ -21,6 +22,22 @@ const Product = db.define('product', {
   imageUrl: {
     type: Sequelize.TEXT
   }
+})
+
+// Hooks
+
+Product.afterFind(product => {
+  product.price = convertToDollars(product.price)
+})
+
+Product.beforeValidate(product => {
+  product.price = convertToPennies(product.price)
+})
+
+Product.beforeBulkCreate(products => {
+  products.forEach(product => {
+    product.price = convertToPennies(product.price)
+  })
 })
 
 module.exports = Product
