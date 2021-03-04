@@ -16,23 +16,31 @@ export class SingleProduct extends React.Component {
     this.props.history.push('/cart')
   }
   render() {
-    console.log('SINGLE P PROPS', this.props.singleProduct)
-    const product = this.props.singleProduct
-    return (
-      <div>
-        <h1>{product.name}</h1>
-        <p>{product.description}</p>
-        <h2>${product.price}</h2>
-        <h2>Stock: {product.stock}</h2>
-        <button onClick={this.handleAdd}>Add to cart</button>
-      </div>
-    )
+
+    if (this.props.loading === false) {
+      const product = this.props.singleProduct
+      return (
+        <div>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+          <h2>${product.price}</h2>
+          <h2>Stock: {product.stock}</h2>
+          <button>Add to cart</button>
+        </div>
+      )
+    } else {
+      return <div>Loading</div>
+    }
+
+   
+
   }
 }
 
 const mapState = state => {
   return {
-    singleProduct: state.singleProduct
+    singleProduct: state.singleProduct.singleProduct,
+    loading: state.singleProduct.loading
   }
 }
 

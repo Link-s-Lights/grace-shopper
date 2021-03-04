@@ -5,7 +5,7 @@ import history from '../history'
 const SET_SINGLE_PRODUCT = 'SET_SINGLE_PRODUCT'
 
 //INITIAL STATE
-const defaultSingleProduct = {}
+const defaultSingleProduct = {loading: true, singleProduct: {}}
 
 //ACTION CREATORS
 const setActionSingleProduct = product => {
@@ -44,7 +44,7 @@ export const updateProduct = (product, history) => {
 export default function(state = defaultSingleProduct, action) {
   switch (action.type) {
     case SET_SINGLE_PRODUCT:
-      return action.product
+      return {...state, loading: false, singleProduct: action.product}
     default:
       return state
   }

@@ -9,7 +9,7 @@ export class AllProducts extends React.Component {
   }
   render() {
     const productsArray = this.props.products
-    if (productsArray) {
+    if (this.props.loading === false) {
       return (
         <div>
           <h1>All Products</h1>
@@ -37,7 +37,8 @@ export class AllProducts extends React.Component {
 
 const mapState = state => {
   return {
-    products: state.products
+    products: state.products.products,
+    loading: state.products.loading
   }
 }
 
