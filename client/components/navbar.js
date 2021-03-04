@@ -36,7 +36,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link className="dropdown-item">account</Link>
               <Link className="dropdown-item">orders</Link>
-              <Link className="dropdown-item">sign out</Link>
+              <Link to="#" onClick={handleClick} className="dropdown-item">
+                sign out
+              </Link>
             </div>
           </div>
           <Link to="/cart" className="cart-button btn btn-info btn-lg">
@@ -49,11 +51,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
           <Link to="/products">All Products</Link>
-          <Link to="/cart">
-            <div href="#" className="btn btn-info btn-lg">
-              <span className="glyphicon glyphicon-shopping-cart" /> Shopping
-              Cart
-            </div>
+          <Link to="/cart" className="cart-button btn btn-info btn-lg">
+            <span className="glyphicon glyphicon-shopping-cart" /> Shopping Cart
           </Link>
 
           {/* MAYBE ADD SWITCH HERE */}
