@@ -37,11 +37,9 @@ const User = db.define('user', {
     type: Sequelize.STRING
   },
   type: {
-    type: Sequelize.STRING,
-    defaultValue: 'user',
-    validate: {
-      isIn: [['user', 'admin']]
-    }
+    type: Sequelize.ENUM,
+    values: ['user', 'admin'],
+    defaultValue: 'user'
   },
   phone: {
     type: Sequelize.STRING
