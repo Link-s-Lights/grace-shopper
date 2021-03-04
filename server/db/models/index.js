@@ -33,6 +33,19 @@ Product.belongsToMany(Attribute, {through: ProductAttribute})
 Variation.belongsToMany(Product, {through: ProductGroup})
 Product.belongsToMany(Variation, {through: ProductGroup})
 
+Order.prototype.calculateTotals = () => {
+  let order = this
+  return this.getProducts()
+    .then(lineItems => lineItems.map(lineItem => lineItem.totalPrice))
+    .then(lineItemTotals =>
+      lineItemTotals.reduce((total, value) => total + value, 0)
+    )
+    .then(total => {
+      instance.dataValues.total = total
+      return instance
+    })
+}
+
 module.exports = {
   User,
   Attribute,

@@ -1,12 +1,22 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/singleProduct'
+import {addToCart} from '../store/cart'
 
 export class SingleProduct extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleAdd = this.handleAdd.bind(this)
+  }
   async componentDidMount() {
     await this.props.getMySingleProduct(this.props.match.params)
   }
+  handleAdd() {
+    this.props.addToCart(this.props.singleProduct)
+    this.props.history.push('/cart')
+  }
   render() {
+
     if (this.props.loading === false) {
       const product = this.props.singleProduct
       return (
@@ -21,6 +31,9 @@ export class SingleProduct extends React.Component {
     } else {
       return <div>Loading</div>
     }
+
+   
+
   }
 }
 
@@ -34,7 +47,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getMySingleProduct: singleProduct =>
-      dispatch(getSingleProduct(singleProduct))
+      dispatch(getSingleProduct(singleProduct)),
+    addToCart: product => dispatch(addToCart(product))
   }
 }
 

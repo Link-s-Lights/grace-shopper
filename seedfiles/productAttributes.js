@@ -1,62 +1,199 @@
-const products = require('./products')
-let productAttributes = []
-let attributesObject = {}
-
-const coinFlip = () => {
-  return Math.random() > 0.5
-}
-
-const getWatts = () => {
-  const watts = ['60 watts', '75 watts', '100 watts', '40 watts']
-  return watts[Math.floor(watts.length * Math.random())]
-}
-
-const getColor = () => {
-  const options = ['white', 'sun yellow', 'soft white']
-  return options[Math.floor(options.length * Math.random())]
-}
-
-const getOutput = () => {
-  const options = ['2900lm', '1000lm', '1500lm', '5000lm']
-  return options[Math.floor(options.length * Math.random())]
-}
-const getHours = () => {
-  return ''.concat(Math.ceil(10 * Math.random()), '0,000 hours')
-}
-
-for (let i = 1; i <= products.length; i++) {
-  //watts
-  if (coinFlip()) {
-    attributesObject.productId = i
-    attributesObject.attributeId = 1
-    attributesObject.value = getWatts()
-    productAttributes.push(attributesObject)
-    attributesObject = {}
-  }
-  //color
-  if (coinFlip()) {
-    attributesObject.productId = i
-    attributesObject.attributeId = 2
-    attributesObject.value = getColor()
-    productAttributes.push(attributesObject)
-    attributesObject = {}
-  }
-  //Light Ouput
-  if (coinFlip()) {
-    attributesObject.productId = i
-    attributesObject.attributeId = 3
-    attributesObject.value = getOutput()
-    productAttributes.push(attributesObject)
-    attributesObject = {}
-  }
-  //hours
-  if (coinFlip()) {
-    attributesObject.productId = i
-    attributesObject.attributeId = 4
-    attributesObject.value = getHours()
-    productAttributes.push(attributesObject)
-    attributesObject = {}
-  }
-}
-
-module.exports = productAttributes
+module.exports = [
+  {attributeId: 1, productId: 1, value: '75 watts'},
+  {attributeId: 1, productId: 2, value: '75 watts'},
+  {attributeId: 1, productId: 4, value: '100 watts'},
+  {attributeId: 1, productId: 8, value: '75 watts'},
+  {attributeId: 1, productId: 10, value: '100 watts'},
+  {attributeId: 1, productId: 12, value: '100 watts'},
+  {attributeId: 1, productId: 13, value: '100 watts'},
+  {attributeId: 1, productId: 21, value: '100 watts'},
+  {attributeId: 1, productId: 22, value: '60 watts'},
+  {attributeId: 1, productId: 24, value: '40 watts'},
+  {attributeId: 1, productId: 25, value: '40 watts'},
+  {attributeId: 1, productId: 26, value: '60 watts'},
+  {attributeId: 1, productId: 27, value: '75 watts'},
+  {attributeId: 1, productId: 29, value: '75 watts'},
+  {attributeId: 1, productId: 30, value: '75 watts'},
+  {attributeId: 1, productId: 32, value: '100 watts'},
+  {attributeId: 1, productId: 33, value: '40 watts'},
+  {attributeId: 1, productId: 35, value: '100 watts'},
+  {attributeId: 1, productId: 36, value: '75 watts'},
+  {attributeId: 1, productId: 38, value: '100 watts'},
+  {attributeId: 1, productId: 39, value: '60 watts'},
+  {attributeId: 1, productId: 43, value: '60 watts'},
+  {attributeId: 1, productId: 45, value: '40 watts'},
+  {attributeId: 1, productId: 46, value: '60 watts'},
+  {attributeId: 1, productId: 49, value: '60 watts'},
+  {attributeId: 1, productId: 50, value: '75 watts'},
+  {attributeId: 1, productId: 51, value: '100 watts'},
+  {attributeId: 1, productId: 56, value: '100 watts'},
+  {attributeId: 1, productId: 57, value: '60 watts'},
+  {attributeId: 1, productId: 58, value: '40 watts'},
+  {attributeId: 1, productId: 59, value: '40 watts'},
+  {attributeId: 1, productId: 60, value: '60 watts'},
+  {attributeId: 1, productId: 63, value: '60 watts'},
+  {attributeId: 1, productId: 64, value: '100 watts'},
+  {attributeId: 1, productId: 65, value: '100 watts'},
+  {attributeId: 1, productId: 67, value: '60 watts'},
+  {attributeId: 1, productId: 72, value: '75 watts'},
+  {attributeId: 1, productId: 75, value: '75 watts'},
+  {attributeId: 1, productId: 76, value: '40 watts'},
+  {attributeId: 1, productId: 78, value: '75 watts'},
+  {attributeId: 1, productId: 80, value: '100 watts'},
+  {attributeId: 1, productId: 83, value: '60 watts'},
+  {attributeId: 1, productId: 85, value: '60 watts'},
+  {attributeId: 1, productId: 86, value: '60 watts'},
+  {attributeId: 1, productId: 92, value: '40 watts'},
+  {attributeId: 1, productId: 93, value: '60 watts'},
+  {attributeId: 1, productId: 94, value: '75 watts'},
+  {attributeId: 1, productId: 96, value: '100 watts'},
+  {attributeId: 1, productId: 97, value: '75 watts'},
+  {attributeId: 1, productId: 99, value: '75 watts'},
+  {attributeId: 2, productId: 4, value: 'white'},
+  {attributeId: 2, productId: 5, value: 'white'},
+  {attributeId: 2, productId: 8, value: 'sun yellow'},
+  {attributeId: 2, productId: 10, value: 'white'},
+  {attributeId: 2, productId: 12, value: 'white'},
+  {attributeId: 2, productId: 14, value: 'soft white'},
+  {attributeId: 2, productId: 17, value: 'sun yellow'},
+  {attributeId: 2, productId: 18, value: 'sun yellow'},
+  {attributeId: 2, productId: 21, value: 'sun yellow'},
+  {attributeId: 2, productId: 23, value: 'soft white'},
+  {attributeId: 2, productId: 25, value: 'soft white'},
+  {attributeId: 2, productId: 27, value: 'white'},
+  {attributeId: 2, productId: 28, value: 'soft white'},
+  {attributeId: 2, productId: 29, value: 'soft white'},
+  {attributeId: 2, productId: 32, value: 'sun yellow'},
+  {attributeId: 2, productId: 33, value: 'soft white'},
+  {attributeId: 2, productId: 34, value: 'soft white'},
+  {attributeId: 2, productId: 35, value: 'sun yellow'},
+  {attributeId: 2, productId: 36, value: 'sun yellow'},
+  {attributeId: 2, productId: 38, value: 'white'},
+  {attributeId: 2, productId: 40, value: 'white'},
+  {attributeId: 2, productId: 42, value: 'soft white'},
+  {attributeId: 2, productId: 43, value: 'sun yellow'},
+  {attributeId: 2, productId: 45, value: 'white'},
+  {attributeId: 2, productId: 47, value: 'soft white'},
+  {attributeId: 2, productId: 49, value: 'white'},
+  {attributeId: 2, productId: 54, value: 'white'},
+  {attributeId: 2, productId: 55, value: 'sun yellow'},
+  {attributeId: 2, productId: 56, value: 'white'},
+  {attributeId: 2, productId: 58, value: 'sun yellow'},
+  {attributeId: 2, productId: 59, value: 'soft white'},
+  {attributeId: 2, productId: 61, value: 'white'},
+  {attributeId: 2, productId: 62, value: 'soft white'},
+  {attributeId: 2, productId: 63, value: 'sun yellow'},
+  {attributeId: 2, productId: 64, value: 'soft white'},
+  {attributeId: 2, productId: 65, value: 'white'},
+  {attributeId: 2, productId: 66, value: 'soft white'},
+  {attributeId: 2, productId: 67, value: 'sun yellow'},
+  {attributeId: 2, productId: 68, value: 'sun yellow'},
+  {attributeId: 2, productId: 69, value: 'white'},
+  {attributeId: 2, productId: 71, value: 'sun yellow'},
+  {attributeId: 2, productId: 72, value: 'soft white'},
+  {attributeId: 2, productId: 73, value: 'white'},
+  {attributeId: 2, productId: 74, value: 'soft white'},
+  {attributeId: 2, productId: 75, value: 'white'},
+  {attributeId: 2, productId: 76, value: 'soft white'},
+  {attributeId: 2, productId: 78, value: 'soft white'},
+  {attributeId: 2, productId: 79, value: 'soft white'},
+  {attributeId: 2, productId: 82, value: 'white'},
+  {attributeId: 2, productId: 83, value: 'soft white'},
+  {attributeId: 2, productId: 84, value: 'white'},
+  {attributeId: 2, productId: 88, value: 'soft white'},
+  {attributeId: 2, productId: 89, value: 'white'},
+  {attributeId: 2, productId: 91, value: 'sun yellow'},
+  {attributeId: 2, productId: 95, value: 'sun yellow'},
+  {attributeId: 2, productId: 99, value: 'white'},
+  {attributeId: 3, productId: 1, value: '1000lm'},
+  {attributeId: 3, productId: 5, value: '2900lm'},
+  {attributeId: 3, productId: 8, value: '5000lm'},
+  {attributeId: 3, productId: 9, value: '2900lm'},
+  {attributeId: 3, productId: 12, value: '2900lm'},
+  {attributeId: 3, productId: 13, value: '1500lm'},
+  {attributeId: 3, productId: 14, value: '5000lm'},
+  {attributeId: 3, productId: 16, value: '1500lm'},
+  {attributeId: 3, productId: 18, value: '1000lm'},
+  {attributeId: 3, productId: 21, value: '5000lm'},
+  {attributeId: 3, productId: 24, value: '2900lm'},
+  {attributeId: 3, productId: 26, value: '1500lm'},
+  {attributeId: 3, productId: 29, value: '1000lm'},
+  {attributeId: 3, productId: 30, value: '5000lm'},
+  {attributeId: 3, productId: 31, value: '5000lm'},
+  {attributeId: 3, productId: 32, value: '1500lm'},
+  {attributeId: 3, productId: 37, value: '1500lm'},
+  {attributeId: 3, productId: 38, value: '2900lm'},
+  {attributeId: 3, productId: 39, value: '2900lm'},
+  {attributeId: 3, productId: 43, value: '5000lm'},
+  {attributeId: 3, productId: 44, value: '5000lm'},
+  {attributeId: 3, productId: 46, value: '2900lm'},
+  {attributeId: 3, productId: 50, value: '2900lm'},
+  {attributeId: 3, productId: 54, value: '2900lm'},
+  {attributeId: 3, productId: 55, value: '2900lm'},
+  {attributeId: 3, productId: 56, value: '1500lm'},
+  {attributeId: 3, productId: 62, value: '1500lm'},
+  {attributeId: 3, productId: 63, value: '1500lm'},
+  {attributeId: 3, productId: 64, value: '5000lm'},
+  {attributeId: 3, productId: 67, value: '2900lm'},
+  {attributeId: 3, productId: 70, value: '2900lm'},
+  {attributeId: 3, productId: 71, value: '5000lm'},
+  {attributeId: 3, productId: 72, value: '5000lm'},
+  {attributeId: 3, productId: 76, value: '1500lm'},
+  {attributeId: 3, productId: 78, value: '2900lm'},
+  {attributeId: 3, productId: 80, value: '5000lm'},
+  {attributeId: 3, productId: 83, value: '2900lm'},
+  {attributeId: 3, productId: 89, value: '2900lm'},
+  {attributeId: 3, productId: 90, value: '1500lm'},
+  {attributeId: 3, productId: 91, value: '2900lm'},
+  {attributeId: 3, productId: 95, value: '5000lm'},
+  {attributeId: 3, productId: 96, value: '1000lm'},
+  {attributeId: 3, productId: 97, value: '5000lm'},
+  {attributeId: 3, productId: 98, value: '1000lm'},
+  {attributeId: 4, productId: 2, value: '40,000 hours'},
+  {attributeId: 4, productId: 5, value: '90,000 hours'},
+  {attributeId: 4, productId: 7, value: '20,000 hours'},
+  {attributeId: 4, productId: 11, value: '10,000 hours'},
+  {attributeId: 4, productId: 14, value: '70,000 hours'},
+  {attributeId: 4, productId: 15, value: '10,000 hours'},
+  {attributeId: 4, productId: 17, value: '10,000 hours'},
+  {attributeId: 4, productId: 19, value: '40,000 hours'},
+  {attributeId: 4, productId: 21, value: '100,000 hours'},
+  {attributeId: 4, productId: 22, value: '70,000 hours'},
+  {attributeId: 4, productId: 23, value: '60,000 hours'},
+  {attributeId: 4, productId: 26, value: '20,000 hours'},
+  {attributeId: 4, productId: 27, value: '70,000 hours'},
+  {attributeId: 4, productId: 28, value: '70,000 hours'},
+  {attributeId: 4, productId: 33, value: '30,000 hours'},
+  {attributeId: 4, productId: 34, value: '30,000 hours'},
+  {attributeId: 4, productId: 36, value: '70,000 hours'},
+  {attributeId: 4, productId: 37, value: '40,000 hours'},
+  {attributeId: 4, productId: 40, value: '30,000 hours'},
+  {attributeId: 4, productId: 44, value: '30,000 hours'},
+  {attributeId: 4, productId: 45, value: '10,000 hours'},
+  {attributeId: 4, productId: 46, value: '50,000 hours'},
+  {attributeId: 4, productId: 47, value: '50,000 hours'},
+  {attributeId: 4, productId: 49, value: '100,000 hours'},
+  {attributeId: 4, productId: 51, value: '100,000 hours'},
+  {attributeId: 4, productId: 52, value: '90,000 hours'},
+  {attributeId: 4, productId: 53, value: '70,000 hours'},
+  {attributeId: 4, productId: 56, value: '10,000 hours'},
+  {attributeId: 4, productId: 57, value: '60,000 hours'},
+  {attributeId: 4, productId: 60, value: '10,000 hours'},
+  {attributeId: 4, productId: 64, value: '50,000 hours'},
+  {attributeId: 4, productId: 66, value: '90,000 hours'},
+  {attributeId: 4, productId: 68, value: '30,000 hours'},
+  {attributeId: 4, productId: 71, value: '80,000 hours'},
+  {attributeId: 4, productId: 74, value: '70,000 hours'},
+  {attributeId: 4, productId: 78, value: '30,000 hours'},
+  {attributeId: 4, productId: 79, value: '100,000 hours'},
+  {attributeId: 4, productId: 81, value: '100,000 hours'},
+  {attributeId: 4, productId: 84, value: '60,000 hours'},
+  {attributeId: 4, productId: 87, value: '100,000 hours'},
+  {attributeId: 4, productId: 88, value: '60,000 hours'},
+  {attributeId: 4, productId: 89, value: '50,000 hours'},
+  {attributeId: 4, productId: 91, value: '50,000 hours'},
+  {attributeId: 4, productId: 93, value: '10,000 hours'},
+  {attributeId: 4, productId: 98, value: '80,000 hours'},
+  {attributeId: 4, productId: 99, value: '80,000 hours'},
+  {attributeId: 4, productId: 100, value: '100,000 hours'}
+]
