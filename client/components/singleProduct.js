@@ -9,6 +9,7 @@ export class SingleProduct extends React.Component {
     this.handleAdd = this.handleAdd.bind(this)
   }
   async componentDidMount() {
+    let i = 1
     await this.props.getMySingleProduct(this.props.match.params)
   }
   handleAdd() {
