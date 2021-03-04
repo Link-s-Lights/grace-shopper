@@ -13,19 +13,21 @@ export class AllProducts extends React.Component {
       return (
         <div>
           <h1>All Products</h1>
-          <div>
-            {productsArray.map(product => {
-              return (
-                <div key={product.id}>
-                  <Link to={`/products/${product.id}`}>
-                    <h1>{product.name}</h1>
-                  </Link>
-                  <p>{product.description}</p>
-                  <h2>${product.price}</h2>
-                  <h2>Stock: {product.stock}</h2>
-                </div>
-              )
-            })}
+          <div className="container">
+            <div className="row row-cols-3">
+              {productsArray.map(product => {
+                return (
+                  <div key={product.id} className="col">
+                    <Link to={`/products/${product.id}`}>
+                      <h1>{product.name}</h1>
+                    </Link>
+                    <p>{product.description}</p>
+                    <h2>${product.price}</h2>
+                    <h2>Stock: {product.stock}</h2>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       )
