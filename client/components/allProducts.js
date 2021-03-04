@@ -17,7 +17,7 @@ export class AllProducts extends React.Component {
             <div className="row row-cols-3">
               {productsArray.map(product => {
                 return (
-                  <div key={product.id} className="col">
+                  <div key={product.id} className="col black-border">
                     <Link to={`/products/${product.id}`}>
                       <h1>{product.name}</h1>
                     </Link>

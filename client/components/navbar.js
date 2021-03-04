@@ -8,7 +8,7 @@ import allProducts from './allProducts'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
     <div>
-      <h1 className="links-lights-title">Link's Lights</h1>
+      <h1>Link's Lights</h1>
     </div>
     <nav className="navbar navbar-light bg-light">
       {isLoggedIn ? (
