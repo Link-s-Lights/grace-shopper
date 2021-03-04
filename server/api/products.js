@@ -1,28 +1,12 @@
 const router = require('express').Router()
-const {Product, Attribute, ProductAttribute} = require('../db/models')
+const isAuthorized = require('./gatekeeper')
+const {Product, Attribute} = require('../db/models')
+const {createAssociations, updateAssociations} = require('./utility')
 module.exports = router
 
-// TODO: Abstract to other file
-const bulkCreateAssociations = async (productId, attributes) => {
-  const allAttributes = await Promise.all(
-    attributes.map(attribute => {
-      return Attribute.findOrCreate({
-        where: {name: attribute.name}
-      })
-    })
-  )
-
-  const associationArray = allAttributes.map((attribute, index) => {
-    return {
-      productId: productId,
-      attributeId: attribute[0].id,
-      value: attributes[index].value
-    }
-  })
-
-  await ProductAttribute.bulkCreate(associationArray)
-}
-
+/**
+ * GET all products in the database
+ */
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({include: Attribute})
@@ -32,20 +16,9 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    if (req.user.type !== 'admin') {
-      res.sendStatus(401)
-    } else {
-      const newProduct = await Product.create(req.body)
-      bulkCreateAssociations(newProduct.id, req.body.attributes)
-      res.json(newProduct)
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
+/**
+ * GET a single product in the database by its id
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const product = await Product.findOne({
@@ -60,31 +33,66 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-// broken
-router.put('/:id', async (req, res, next) => {
+/**
+ * POST a new product to the database,
+ * requires administrative access
+ * @param {Object} req.body - requires {name, price}, can accept {description, stock=0, imageUrl}
+ */
+router.post('/', isAuthorized, async (req, res, next) => {
   try {
+    if (req.user.type !== 'admin') {
+      res.sendStatus(401)
+    } else {
+      const {name, price, description, stock, imageUrl} = req.body
+      const newProduct = await Product.create({
+        name,
+        price,
+        description,
+        stock,
+        imageUrl
+      })
+      createAssociations(newProduct.id, req.body.attributes)
+      res.json(newProduct)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
+ * PUT new data onto an existing product by id,
+ * requires administrative access
+ * @param {Object} req.body - can accept {name, price, description, stock=0, imageUrl} and should pass in unchanged values
+ */
+router.put('/:id', isAuthorized, async (req, res, next) => {
+  /* NOTE: PUT route contains minor bug:
+   * Can update existing attribute
+   * associations, but cannot add new ones
+   */
+  try {
+    const {name, price, description, stock, imageUrl} = req.body
     const [numberOfAffectedRows, affectedRows] = await Product.update(
-      {
-        ...req.body
-      },
+      {name, price, description, stock, imageUrl},
       {
         where: {id: req.params.id},
         returning: true,
         plain: true
       }
     )
-    console.log('NUM AFFECT', numberOfAffectedRows)
     const updatedProduct = affectedRows
-    console.log('AFF PRODUCT', affectedRows)
-    bulkCreateAssociations(updatedProduct.id, req.body.attributes)
+    updateAssociations(updatedProduct.id, req.body.attributes)
     updatedProduct ? res.json(updatedProduct) : res.sendStatus(304)
   } catch (err) {
     console.log(err)
     next(err)
   }
 })
-//test
-router.delete('/:id', async (req, res, next) => {
+
+/**
+ * DELETE an existing product in the database by id,
+ * requires administrative access
+ */
+router.delete('/:id', isAuthorized, async (req, res, next) => {
   try {
     await Product.destroy({where: {id: req.user.id}})
     res.sendStatus(204)
