@@ -10,23 +10,37 @@ const Navbar = ({handleClick, isLoggedIn}) => (
     {/* <div>
       <h1>Link's Lights</h1>
     </div> */}
-    <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-      <a className="navbar-brand" href="#">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-start">
+      <Link className="navbar-brand" to="/products">
         Link's Lights
-      </a>
+      </Link>
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
+          {/* <Link to="/home">Home</Link> */}
+          {/* <a href="#" onClick={handleClick}>
             Logout
-          </a>
-          <Link to="/products">All Products</Link>
-          <Link to="/cart">
-            <a href="#" className="btn btn-info btn-lg">
-              <span className="glyphicon glyphicon-shopping-cart" /> Shopping
-              Cart
-            </a>
+          </a> */}
+          {/* <Link to="/products">All Products</Link> */}
+          <div className="nav-item dropdown">
+            <div
+              className="nav-link dropdown-toggle"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Profile
+            </div>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <Link className="dropdown-item">account</Link>
+              <Link className="dropdown-item">orders</Link>
+              <Link className="dropdown-item">sign out</Link>
+            </div>
+          </div>
+          <Link to="/cart" className="cart-button btn btn-info btn-lg">
+            <span className="glyphicon glyphicon-shopping-cart" /> Shopping Cart
           </Link>
         </div>
       ) : (
@@ -36,10 +50,10 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <Link to="/signup">Sign Up</Link>
           <Link to="/products">All Products</Link>
           <Link to="/cart">
-            <a href="#" className="btn btn-info btn-lg">
+            <div href="#" className="btn btn-info btn-lg">
               <span className="glyphicon glyphicon-shopping-cart" /> Shopping
               Cart
-            </a>
+            </div>
           </Link>
 
           {/* MAYBE ADD SWITCH HERE */}

@@ -23,3 +23,13 @@ form div {
 .black-border {
   border: black solid 2px;
 }
+
+.cart-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.out-of-stock {
+  color: red;
+}
