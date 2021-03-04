@@ -17,6 +17,9 @@ const Product = db.define('product', {
   stock: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  imageUrl: {
+    type: Sequelize.TEXT
   }
 })
 

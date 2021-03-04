@@ -15,8 +15,6 @@ const productSeed = require('../seedfiles/products')
 const attributeSeed = require('../seedfiles/attributes')
 const productAttSeed = require('../seedfiles/productAttributes')
 
-console.log('seed file:', productAttSeed)
-
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
