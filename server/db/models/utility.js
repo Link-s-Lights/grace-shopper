@@ -1,12 +1,12 @@
 const convertToDollars = value => {
-  if (value && Number.isInteger(value)) {
+  if (!Number.isNaN(value)) {
     return value / 100
   }
 }
 
 const convertToPennies = value => {
-  if (value && !Number.isInteger(value)) {
-    return value * 100
+  if (!Number.isNaN(value)) {
+    return Math.round(value * 100)
   }
 }
 
