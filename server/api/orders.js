@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const {Order, ShippingAddress} = require('../db/models')
 module.exports = router
-
+//test
 router.get('/', async (req, res, next) => {
   try {
     if (req.user.type === 'admin') {
@@ -23,6 +23,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    const {blah, blahblah} = req.body
     const newOrder = await Order.create(req.body)
     newOrder.setShippingAddress(req.body.shippingAddress)
     res.json(newOrder)
