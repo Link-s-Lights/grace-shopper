@@ -14,16 +14,19 @@ const Order = db.define('order', {
     defaultValue: 'cart'
   },
   tax: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   },
   shippingCost: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   },
   discountCode: {
     type: Sequelize.STRING
   },
   discountAmt: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 })
 
@@ -52,15 +55,22 @@ Order.prototype.getTotalCost = async () => {
 // Hooks
 
 Order.afterFind(order => {
-  order.tax = convertToDollars(order.tax)
-  order.shippingCost = convertToDollars(order.shippingCost)
-  order.discountAmt = convertToDollars(order.discountAmt)
+  if (order) {
+    order.tax = convertToDollars(order.tax)
+    order.shippingCost = convertToDollars(order.shippingCost)
+    order.discountAmt = convertToDollars(order.discountAmt)
+  }
 })
 
 Order.beforeValidate(order => {
-  order.tax = convertToPennies(order.tax)
-  order.shippingCost = convertToPennies(order.shippingCost)
-  order.discountAmt = convertToPennies(order.discountAmt)
+  console.log('in beforeValidate Order hook')
+  console.log('order: ', order)
+  if (order) {
+    order.tax = convertToPennies(order.tax)
+    order.shippingCost = convertToPennies(order.shippingCost)
+    order.discountAmt = convertToPennies(order.discountAmt)
+  }
+  console.log('exiting hook')
 })
 
 Order.beforeBulkCreate(orders => {

@@ -63,6 +63,7 @@ router.get('/cart', async (req, res, next) => {
 
 router.put('/cart', async (req, res, next) => {
   try {
+    console.log('in cart router')
     if (req.user.type === 'user') {
       const [cart, newCart] = await Order.findOrCreate({
         where: {
@@ -70,11 +71,15 @@ router.put('/cart', async (req, res, next) => {
           status: 'cart'
         }
       })
+      console.log('cart attained, is new: ', newCart)
       if (!newCart) await OrderProduct.destroy({where: {orderId: cart.id}})
+      console.log('destroyed old cart lineItems')
       const lineItems = req.body.lineItems.map(item => {
         return {orderId: cart.id, productId: item.id, qty: item.qty}
       })
+      console.log('created lineItems array')
       await OrderProduct.bulkCreate(lineItems)
+      console.log('orderProducts created')
       res.sendStatus(200)
     }
   } catch (err) {

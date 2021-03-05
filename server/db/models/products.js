@@ -26,8 +26,14 @@ const Product = db.define('product', {
 
 // Hooks
 
-Product.afterFind(product => {
-  product.price = convertToDollars(product.price)
+Product.afterFind(result => {
+  if (Array.isArray(result)) {
+    result.forEach(product => {
+      product.price = convertToDollars(product.price)
+    })
+  } else {
+    result.price = convertToDollars(result.price)
+  }
 })
 
 Product.beforeValidate(product => {
