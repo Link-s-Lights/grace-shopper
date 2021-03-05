@@ -67,6 +67,7 @@ export const getCart = () => {
   return async dispatch => {
     try {
       const {user} = store.getState()
+      // const user = {}
       let data = {}
       if (user.id) {
         console.log('found user')
@@ -98,18 +99,6 @@ export const createOrder = (order, history) => {
   }
 }
 
-export const testThunk = (order, history) => {
-  return async dispatch => {
-    try {
-      dispatch(createActionOrder(data))
-      const {data} = await axios.post('/api/orders', order)
-      history.push('/orders')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-}
-
 export const updateOrder = (order, history) => {
   return async dispatch => {
     try {
@@ -126,14 +115,14 @@ export const saveCart = async () => {
   const {user, cart} = store.getState()
   if (user.id) {
     try {
+      console.log('saving to user profile')
       await axios.put(`/api/orders/cart`, cart)
-      // history.push(`/orders/${order.id}`)
     } catch (err) {
       console.log(err)
     }
-  } else {
-    window.localStorage.setItem('cart', JSON.stringify(cart))
   }
+  console.log('saving to local storage')
+  window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
 //REDUCER

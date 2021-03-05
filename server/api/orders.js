@@ -34,21 +34,25 @@ router.get('/', async (req, res, next) => {
 router.get('/cart', async (req, res, next) => {
   try {
     if (req.user.type === 'user') {
-      const cart = await Order.findOne({
+      const [cart, created] = await Order.findOrCreate({
         where: {
           userId: req.user.id,
           status: 'cart'
         },
         include: Product
       })
-      const lineItems = cart.products.map(product => ({
-        id: product.id,
-        name: product.name,
-        qty: product.orderProduct.qty,
-        price: product.price,
-        stock: product.stock
-      }))
-      res.json({lineItems})
+      if (created) {
+        res.json({lineItems: []})
+      } else {
+        const lineItems = cart.products.map(product => ({
+          id: product.id,
+          name: product.name,
+          qty: product.orderProduct.qty,
+          price: product.price,
+          stock: product.stock
+        }))
+        res.json({lineItems})
+      }
     } else {
       res.json(null) //send empty if not user, should never be called
     }
