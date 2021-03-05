@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable complexity */
 import axios from 'axios'
 import history from '../history'
 import store from './index'
@@ -38,9 +40,10 @@ export const addToCart = product => ({
   product
 })
 
-export const emptyCart = () => ({
-  type: EMPTY_CART
-})
+export const emptyCart = () => {
+  window.localStorage.removeItem('cart')
+  return {type: EMPTY_CART}
+}
 
 export const removeItem = idx => ({
   type: REMOVE_ITEM,
@@ -60,15 +63,20 @@ export const loadCart = cart => ({
 
 //THUNK CREATORS
 export const getCart = () => {
+  console.log('in get cart')
   return async dispatch => {
     try {
       const {user} = store.getState()
+      // const user = {}
       let data = {}
       if (user.id) {
-        data = (await axios.get('/api/orders/cart/' + user.id)).data
+        console.log('found user')
+        data = (await axios.get('/api/orders/cart')).data
       } else {
+        console.log('no user cart to load')
         data = JSON.parse(window.localStorage.getItem('cart'))
       }
+      console.log('found this cart: ', data)
       if (data) {
         dispatch(loadCart(data))
       } else {
@@ -91,18 +99,6 @@ export const createOrder = (order, history) => {
   }
 }
 
-export const testThunk = (order, history) => {
-  return async dispatch => {
-    try {
-      dispatch(createActionOrder(data))
-      const {data} = await axios.post('/api/orders', order)
-      history.push('/orders')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-}
-
 export const updateOrder = (order, history) => {
   return async dispatch => {
     try {
@@ -117,19 +113,16 @@ export const updateOrder = (order, history) => {
 
 export const saveCart = async () => {
   const {user, cart} = store.getState()
-  console.log('in save')
-  console.log('current cart: ', cart)
-  console.log('JSON: ', JSON.stringify(cart))
   if (user.id) {
     try {
-      const {data} = await axios.put(`/api/orders/${order.id}`, cart)
-      // history.push(`/orders/${order.id}`)
+      console.log('saving to user profile')
+      await axios.put(`/api/orders/cart`, cart)
     } catch (err) {
       console.log(err)
     }
-  } else {
-    window.localStorage.setItem('cart', JSON.stringify(cart))
   }
+  console.log('saving to local storage')
+  window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
 //REDUCER
@@ -140,16 +133,33 @@ export default function(state = initialCart, action) {
       return {
         ...state,
         ...action.cart,
-        lineItems: [...state.lineItems, ...action.lineitems]
+        lineItems: [
+          ...state.lineItems.filter(item =>
+            action.cart.lineItems.every(product => product.id !== item.id)
+          ),
+          ...action.cart.lineItems
+        ]
       }
     case CREATE_ORDER:
       return action.order
     case UPDATE_ORDER:
       return action.order
     case ADD_TO_CART:
-      return {
-        ...state,
-        lineItems: [...state.lineItems, {...action.product, qty: 1}]
+      let i = state.lineItems.findIndex(item => {
+        return item.id === action.product.id
+      })
+      console.log('i: ', i)
+      if (i === -1) {
+        console.log('not found item in cart')
+        return {
+          ...state,
+          lineItems: [...state.lineItems, {...action.product, qty: 1}]
+        }
+      } else {
+        console.log('found item in cart')
+        let updatedLineItems = state.lineItems
+        updatedLineItems[i].qty++
+        return {...state, lineItems: updatedLineItems}
       }
     case EMPTY_CART:
       return initialCart

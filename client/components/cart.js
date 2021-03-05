@@ -5,7 +5,8 @@ import {
   createOrder,
   saveCart,
   updateQty,
-  removeItem
+  removeItem,
+  getCart
 } from '../store/cart'
 
 let selectArray = []
@@ -36,8 +37,8 @@ class Cart extends React.Component {
     const {id} = evt.target
     this.props.removeItem(id)
   }
-  componentDidMount() {
-    this.saveCart()
+  async componentDidMount() {
+    await this.props.getCart()
   }
 
   render() {
@@ -58,11 +59,13 @@ class Cart extends React.Component {
                 <td>{item.name}</td>
                 <td>
                   <select id={idx} onChange={this.updateQty} value={item.qty}>
-                    {selectArray.map((x, i) => (
-                      <option value={x} key={i}>
-                        {x}
-                      </option>
-                    ))}
+                    {Array(Math.min(10, item.stock))
+                      .fill(1)
+                      .map((x, i) => (
+                        <option value={i + x} key={i}>
+                          {i + x}
+                        </option>
+                      ))}
                   </select>
                 </td>
                 <td>{item.price}</td>
@@ -94,7 +97,8 @@ const mapDispatch = dispatch => ({
   updateCart: cart => dispatch(updateOrder(cart)),
   submitCart: () => dispach(submitCart(cart)),
   updateQty: (idx, qty) => dispatch(updateQty(idx, qty)),
-  removeItem: idx => dispatch(removeItem(idx))
+  removeItem: idx => dispatch(removeItem(idx)),
+  getCart: () => dispatch(getCart())
 })
 
 export default connect(mapState, mapDispatch)(Cart)
