@@ -20,21 +20,38 @@ const generateSubtotal = async lineItem => {
     },
     attributes: ['price']
   })
-  lineItem.subtotal = convertToPennies(productPricePerQty * lineItem.qty)
+
+  lineItem.subtotal = convertToPennies(productPricePerQty.price * lineItem.qty)
+  console.log(
+    'lineItem subtotal for id: ',
+    lineItem.productId,
+    'subtotal: ',
+    lineItem.subtotal
+  )
 }
 
 OrderProduct.afterFind(lineItem => {
   lineItem.subtotal = convertToDollars(lineItem.subtotal)
 })
 
-OrderProduct.beforeValidate(lineItem => {
-  generateSubtotal(lineItem)
-})
+// OrderProduct.beforeValidate((lineItem) => {
+//   generateSubtotal(lineItem)
+// })
 
-OrderProduct.beforeBulkCreate(lineItems => {
-  lineItems.forEach(lineItem => {
-    generateSubtotal(lineItem)
-  })
-})
+// OrderProduct.beforeBulkCreate((lineItems) => {
+//   lineItems.forEach(async (lineItem) => {
+//       await generateSubtotal(lineItem)
+//     })
+// })
+// /**
+//  * prices { 1: 4.75, 2: 7.54}
+//  * product = []
+//   productPrices = {}
+//   products.forEach(product => productPrices[product.id] = product.price)
+//   lineItems.forEach(lineItem => {lineItem.subtotal = lineItem.qty * productPrices[lineItem.id]})
+//  */
+// OrderProduct.afterBulkCreate( (lineItems) => {
+//   console.log('after bulk create')
+// })
 
 module.exports = OrderProduct
