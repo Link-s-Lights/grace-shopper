@@ -71,19 +71,52 @@ router.put('/cart', async (req, res, next) => {
           status: 'cart'
         }
       })
-      console.log('cart attained, is new: ', newCart)
+      // console.log('cart attained, is new: ', newCart)
       if (!newCart) await OrderProduct.destroy({where: {orderId: cart.id}})
-      console.log('destroyed old cart lineItems')
+      // console.log('destroyed old cart lineItems')
       const lineItems = req.body.lineItems.map(item => {
         return {orderId: cart.id, productId: item.id, qty: item.qty}
       })
-      console.log('created lineItems array')
+      // console.log('created lineItems array')
       await OrderProduct.bulkCreate(lineItems)
-      console.log('orderProducts created')
+      // console.log('orderProducts created')
       res.sendStatus(200)
     }
   } catch (err) {
     next(err)
+  }
+})
+
+router.put('/checkout', async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'cart'
+      },
+      include: Product
+    })
+    cart.status = 'pending'
+    let outOfStock = false
+    cart.products.forEach(product => {
+      if (product.stock <= 0) {
+        console.error('OUT OF STOCK', product.name)
+        outOfStock = true
+        cart.status = 'cart'
+      }
+    })
+    if (outOfStock === false) {
+      Promise.all(
+        cart.products.forEach(product => {
+          product.decrement('stock', {by: 1})
+        })
+      )
+    }
+    cart.status = 'shipped'
+    cart.status = 'cart'
+    res.send(cart.products)
+  } catch (err) {
+    console.log(err)
   }
 })
 
