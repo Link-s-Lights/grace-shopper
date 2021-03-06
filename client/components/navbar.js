@@ -4,20 +4,47 @@ import {connect} from 'react-redux'
 import {NavLink} from 'react-router-dom'
 import {emptyCart} from '../store/cart'
 import {logout} from '../store'
+import NavbarLogin from './navbar-login'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-start">
-      <NavLink className="navbar-brand" to="/products">
-        Link's Lights
-      </NavLink>
-      <div id="login-cart-div" className="d-flex align-items-center">
-        <NavLink to="/cart" className="btn btn-info btn-lg text-center">
-          <span className="glyphicon glyphicon-shopping-cart" /> Shopping Cart
+const Navbar = ({handleClick, isLoggedIn, name}) => (
+  <React.Fragment>
+    <nav className="navbar navbar-light bg-light">
+      <div className="container">
+        <NavLink className="navbar-brand" to="/products">
+          <div className="logo" />
         </NavLink>
+        <div className="d-flex flex-fill">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Find the perfect bulb"
+              aria-label="Search Bar"
+              aria-describedby="button-addon2"
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+            >
+              <i className="bi-search" />
+            </button>
+          </div>
+        </div>
+        <div id="login-cart-div" className="d-flex align-items-center">
+          <NavbarLogin
+            name={name}
+            isLoggedIn={isLoggedIn}
+            handleClick={() => handleClick()}
+          />
+          <NavLink to="/cart" className="btn btn-info mt-0">
+            <i className="bi-cart3" />
+            Shopping Cart
+          </NavLink>
+        </div>
       </div>
     </nav>
-  </div>
+  </React.Fragment>
 )
 
 /**
@@ -25,7 +52,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    name: state.user.fname
   }
 }
 
