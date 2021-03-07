@@ -5,6 +5,7 @@ import history from '../history'
 const SET_PRODUCTS = 'SET_PRODUCTS'
 const CREATE_PRODUCT = 'CREATE_PRODUCT'
 const DELETE_PRODUCT = 'DELETE_PRODUCT'
+const ADD_PRODUCT = 'ADD_PRODUCT'
 
 //INITIAL STATE
 const initialState = {loading: true, products: []}
@@ -79,8 +80,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        products: state.filter(product => product.id !== action.product.id)
+        products: state.products.filter(
+          product => product.id !== action.product.id
+        )
       }
+    case ADD_PRODUCT:
+      return {...state, products: [...state.products, action.product]}
     default:
       return state
   }

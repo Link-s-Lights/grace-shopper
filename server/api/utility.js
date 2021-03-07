@@ -11,12 +11,11 @@ const generateAssociations = async (productId, attributes) => {
         })
       })
     )
-
     return allAttributes.map((attribute, index) => {
       return {
         productId: productId,
         attributeId: attribute[0].id,
-        value: attributes[index].value
+        value: attributes[index].productAttribute.value
       }
     })
   } catch (err) {
@@ -40,21 +39,8 @@ const createAssociations = async (productId, attributes) => {
 
 const updateAssociations = async (productId, attributes) => {
   try {
-    const associations = await generateAssociations(productId, attributes)
-
-    associations.forEach(association => {
-      ProductAttribute.update(
-        {
-          value: association.value
-        },
-        {
-          where: {
-            productId: association.productId,
-            attributeId: association.attributeId
-          }
-        }
-      )
-    })
+    await ProductAttribute.destroy({where: {productId}})
+    await createAssociations(productId, attributes)
   } catch (err) {
     console.log(err)
   }

@@ -6,7 +6,7 @@ import {logout} from '../store'
 import {emptyCart} from '../store/cart'
 import allProducts from './allProducts'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, userType}) => (
   <div>
     {/* <div>
       <h1>Link's Lights</h1>
@@ -41,6 +41,13 @@ const Navbar = ({handleClick, isLoggedIn}) => (
                 <Link to="#" onClick={handleClick} className="dropdown-item">
                   sign out
                 </Link>
+                {userType === 'admin' ? (
+                  <Link className="dropdown-item" to="/products/add">
+                    Add Product
+                  </Link>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <Link to="/cart" className="cart-button btn btn-info btn-lg">
@@ -73,7 +80,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    userType: state.user.type
   }
 }
 

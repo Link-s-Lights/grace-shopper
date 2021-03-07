@@ -39,6 +39,16 @@ export class SingleProduct extends React.Component {
           <button onClick={this.handleAdd} className="btn btn-info btn-lg">
             Add to cart
           </button>
+          {this.props.userType === 'admin' ? (
+            <a
+              href={this.props.location.pathname + '/edit'}
+              className="btn btn-info btn-lg"
+            >
+              Edit
+            </a>
+          ) : (
+            ''
+          )}
         </div>
       )
     } else {
@@ -50,7 +60,8 @@ export class SingleProduct extends React.Component {
 const mapState = state => {
   return {
     singleProduct: state.singleProduct.singleProduct,
-    loading: state.singleProduct.loading
+    loading: state.singleProduct.loading,
+    userType: state.user.type
   }
 }
 
