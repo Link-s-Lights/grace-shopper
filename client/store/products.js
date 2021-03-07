@@ -80,7 +80,9 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        products: state.filter(product => product.id !== action.product.id)
+        products: state.products.filter(
+          product => product.id !== action.product.id
+        )
       }
     case ADD_PRODUCT:
       return {...state, products: [...state.products, action.product]}

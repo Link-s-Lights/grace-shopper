@@ -4,6 +4,7 @@ import history from '../history'
 //ACTION TYPES
 const SET_SINGLE_PRODUCT = 'SET_SINGLE_PRODUCT'
 const ADD_PRODUCT = 'ADD_PRODUCT'
+const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 //INITIAL STATE
 const defaultSingleProduct = {loading: true, singleProduct: {}}
@@ -63,6 +64,8 @@ export default function(state = defaultSingleProduct, action) {
       return {...state, loading: false, singleProduct: action.product}
     case ADD_PRODUCT:
       return {...state, loading: false, singleProduct: action.product}
+    case DELETE_PRODUCT:
+      return defaultSingleProduct
     default:
       return state
   }

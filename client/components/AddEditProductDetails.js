@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateProduct, getSingleProduct} from '../store/singleProduct'
+import {deleteProduct} from '../store/products'
 
 class AddEditProduct extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class AddEditProduct extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.addAttribute = this.addAttribute.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
   handleChange(evt) {
     console.log(evt.target.name)
@@ -54,6 +56,13 @@ class AddEditProduct extends React.Component {
       console.error(err)
     }
   }
+  async handleDelete() {
+    try {
+      await this.props.deleteProduct(this.props.product)
+    } catch (err) {
+      console.error(err)
+    }
+  }
   async componentDidMount() {
     const {id} = this.props.match.params
     if (id) {
@@ -72,7 +81,7 @@ class AddEditProduct extends React.Component {
   }
 
   render() {
-    const {handleChange, handleSubmit, addAttribute} = this
+    const {handleChange, handleSubmit, addAttribute, handleDelete} = this
     const {name, description, imageUrl, attributes, stock, price} = this.state
     return (
       <form id="product_form" onSubmit={handleSubmit}>
@@ -173,6 +182,17 @@ class AddEditProduct extends React.Component {
                 <button type="submit">Submit</button>
               </td>
             </tr>
+            <tr>
+              <td colSpan="2">
+                {this.props.product.id ? (
+                  <button type="button" onClick={handleDelete}>
+                    Delete Product
+                  </button>
+                ) : (
+                  ''
+                )}
+              </td>
+            </tr>
           </tbody>
         </table>
       </form>
@@ -186,7 +206,8 @@ const mapState = state => ({
 const mapDispatch = (dispatch, {history}) => ({
   getMySingleProduct: singleProduct =>
     dispatch(getSingleProduct(singleProduct)),
-  updateProduct: product => dispatch(updateProduct(product, history))
+  updateProduct: product => dispatch(updateProduct(product, history)),
+  deleteProduct: product => dispatch(deleteProduct(product, history))
 })
 
 export default connect(mapState, mapDispatch)(AddEditProduct)
