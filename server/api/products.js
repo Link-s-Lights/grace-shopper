@@ -9,8 +9,17 @@ module.exports = router
  */
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll({include: Attribute})
-    res.json(products)
+    const query = {
+      sortColumn: req.query.sortColumn || 'id',
+      direction: req.query.direction || 'ASC',
+      page: +req.query.page || 1
+    }
+    console.log('router query: ', query)
+    const {count, rows} = await Product.findWithQuery(query)
+    res.json({count, rows, query})
+
+    // const products = await Product.findAll({include: Attribute})
+    // res.json(products)
   } catch (err) {
     next(err)
   }

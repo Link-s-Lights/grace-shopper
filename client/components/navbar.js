@@ -10,7 +10,11 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
   <React.Fragment>
     <nav className="navbar navbar-light bg-light">
       <div className="container">
-        <NavLink className="navbar-brand" to="/products">
+        <NavLink
+          className="navbar-brand"
+          to="/products/?page=1"
+          aria-label="Home"
+        >
           <div className="logo" />
         </NavLink>
         <div className="d-flex flex-fill">
@@ -26,6 +30,7 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
               className="btn btn-outline-secondary"
               type="button"
               id="button-addon2"
+              aria-label="Search Button"
             >
               <i className="bi-search" />
             </button>

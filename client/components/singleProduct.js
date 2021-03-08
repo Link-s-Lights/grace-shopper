@@ -9,9 +9,13 @@ export class SingleProduct extends React.Component {
     this.handleAdd = this.handleAdd.bind(this)
     this.isInStock = this.isInStock.bind(this)
   }
+
+  // Get rid of async/await
   async componentDidMount() {
     await this.props.getMySingleProduct(this.props.match.params)
   }
+
+  // Get rid of async/await
   async handleAdd() {
     try {
       this.props.addToCart(this.props.singleProduct)
@@ -21,6 +25,7 @@ export class SingleProduct extends React.Component {
       console.error(err)
     }
   }
+
   isInStock(product) {
     if (product.stock <= 0) {
       return 'Out Of Stock'

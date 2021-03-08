@@ -8,13 +8,14 @@ const DELETE_PRODUCT = 'DELETE_PRODUCT'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 
 //INITIAL STATE
-const initialState = {loading: true, products: []}
+const initialState = {loading: true, products: [], count: 0}
 
 //ACTION CREATORS
-const getActionProducts = products => {
+const getActionProducts = (products, count) => {
   return {
     type: SET_PRODUCTS,
-    products
+    products,
+    count
   }
 }
 
@@ -34,11 +35,12 @@ const deleteActionProduct = product => {
 
 //THUNK CREATORS
 
-export const setProducts = () => {
+export const setProducts = query => {
   return async dispatch => {
     try {
-      const {data} = await axios.get('/api/products')
-      dispatch(getActionProducts(data))
+      console.log('query: ', query)
+      const {data} = await axios.get(`/api/products/${query}`)
+      dispatch(getActionProducts(data.rows, data.count))
     } catch (err) {
       console.error(err)
     }
@@ -73,7 +75,12 @@ export const deleteProduct = (product, history) => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_PRODUCTS:
-      return {...state, loading: false, products: action.products}
+      return {
+        ...state,
+        loading: false,
+        products: action.products,
+        count: action.count
+      }
     case CREATE_PRODUCT:
       return {...state, loading: false, product: action.product}
     case DELETE_PRODUCT:
