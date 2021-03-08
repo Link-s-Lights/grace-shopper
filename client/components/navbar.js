@@ -5,8 +5,9 @@ import {NavLink} from 'react-router-dom'
 import {emptyCart} from '../store/cart'
 import {logout} from '../store'
 import NavbarLogin from './navbar-login'
+import {setProducts} from '../store/products'
 
-const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
+const Navbar = ({handleClick, handleSearch, isLoggedIn, userType, name}) => (
   <React.Fragment>
     <nav className="navbar navbar-light bg-light">
       <div className="container">
@@ -18,7 +19,10 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
           <div className="logo" />
         </NavLink>
         <div className="d-flex flex-fill">
-          <div className="input-group">
+          <form
+            className="input-group"
+            onSubmit={event => handleSearch(event.target.value)}
+          >
             <input
               type="text"
               className="form-control"
@@ -28,13 +32,13 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
             />
             <button
               className="btn btn-outline-secondary"
-              type="button"
+              type="submit"
               id="button-addon2"
               aria-label="Search Button"
             >
               <i className="bi-search" />
             </button>
-          </div>
+          </form>
         </div>
         <div id="login-cart-div" className="d-flex align-items-center">
           <NavbarLogin
@@ -69,6 +73,9 @@ const mapDispatch = dispatch => {
     handleClick() {
       dispatch(logout())
       dispatch(emptyCart())
+    },
+    handleSearch(query) {
+      dispatch(setProducts(query))
     }
   }
 }
