@@ -3,16 +3,12 @@ body {
 }
 
 a {
+  color: black;
   text-decoration: none;
 }
 
 label {
   display: block;
-}
-
-nav a {
-  display: inline-block;
-  margin: 1em;
 }
 
 form div {
@@ -24,12 +20,17 @@ form div {
   border: black solid 2px;
 }
 
-.cart-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
 .out-of-stock {
   color: red;
+}
+
+.logo {
+  background-image: url('./img/logo.png');
+  width: 111px;
+  height: 40px;
+}
+
+.profile-img {
+  width: 200px;
+  height: 200px;
 }

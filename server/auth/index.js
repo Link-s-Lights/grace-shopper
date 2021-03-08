@@ -60,8 +60,7 @@ router.put('/me', async (req, res, next) => {
         plain: true
       }
     )
-    const updatedUser = affectedRows[0]
-    numberOfAffectedRows ? res.json(updatedUser) : res.sendStatus(304)
+    affectedRows ? res.json(affectedRows) : res.sendStatus(304)
   } catch (err) {
     next(err)
   }

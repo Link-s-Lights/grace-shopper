@@ -23,7 +23,7 @@ export class AllProducts extends React.Component {
         <div>
           <h1>All Products</h1>
           <div className="container">
-            <div className="row row-cols-3">
+            <div className="row row-cols-3 g-4">
               {productsArray.map(product => {
                 return (
                   <div key={product.id} className="col card">
