@@ -87,6 +87,41 @@ router.put('/cart', async (req, res, next) => {
   }
 })
 
+router.put('/checkout', async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      where: {
+        userId: req.user.id
+        // status: 'cart',
+      },
+      include: Product
+    })
+    console.log('CART STATUS', cart.status)
+    cart.status = 'pending'
+    let outOfStock = false
+    cart.products.forEach(product => {
+      if (product.stock <= 0) {
+        console.error('OUT OF STOCK', product.name)
+        res.sendStatus(500)
+        outOfStock = true
+        cart.status = 'cart'
+      }
+    })
+    if (outOfStock === false) {
+      Promise.all(
+        cart.products.forEach(product => {
+          product.decrement('stock', {by: 1})
+        })
+      )
+    }
+    cart.status = 'shipped'
+    // cart.status = 'cart'
+    res.send(cart.products)
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 // TODO: destructure req.body
 // TODO: create productOrder associations *create/use utility functions
 router.post('/', async (req, res, next) => {

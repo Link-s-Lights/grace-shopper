@@ -61,6 +61,13 @@ export const loadCart = cart => ({
   cart
 })
 
+const submitActionOrder = cart => {
+  return {
+    type: SUBMIT_ORDER,
+    cart
+  }
+}
+
 //THUNK CREATORS
 export const getCart = () => {
   console.log('in get cart')
@@ -125,6 +132,19 @@ export const saveCart = async () => {
   window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
+export const submitOrder = order => {
+  return async dispatch => {
+    try {
+      await axios.put('api/orders/checkout')
+      console.log('THUNK')
+      dispatch(submitActionOrder(order))
+      history.push(`/orderSubmission`)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 //REDUCER
 
 export default function(state = initialCart, action) {
@@ -174,6 +194,9 @@ export default function(state = initialCart, action) {
       let newLineItems = [...state.lineItems]
       newLineItems[action.idx].qty = action.qty
       return {...state, lineItems: newLineItems}
+    case SUBMIT_ORDER:
+      console.log('REDUCER')
+      return {...state, cart: action.cart, status: 'shipped'}
     default:
       return state
   }

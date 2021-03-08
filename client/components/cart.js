@@ -6,7 +6,8 @@ import {
   saveCart,
   updateQty,
   removeItem,
-  getCart
+  getCart,
+  submitOrder
 } from '../store/cart'
 
 let selectArray = []
@@ -85,6 +86,11 @@ class Cart extends React.Component {
         </table>
         Subtotal:{' '}
         {lineItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+        <div>
+          <button onClick={() => this.props.submitCart(this.props.cart)}>
+            Checkout
+          </button>
+        </div>
       </div>
     )
   }
@@ -95,7 +101,7 @@ const mapState = state => ({
 })
 const mapDispatch = dispatch => ({
   updateCart: cart => dispatch(updateOrder(cart)),
-  submitCart: () => dispach(submitCart(cart)),
+  submitCart: cart => dispatch(submitOrder(cart)),
   updateQty: (idx, qty) => dispatch(updateQty(idx, qty)),
   removeItem: idx => dispatch(removeItem(idx)),
   getCart: () => dispatch(getCart())
