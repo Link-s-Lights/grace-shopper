@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import UserForm from './userForm'
 
 /**
  * COMPONENT
@@ -13,13 +13,28 @@ export const UserHome = props => {
     <div>
       <div className="container-fluid">
         <div className="row mt-3">
-          <div className="d-flex align-items-center">
+          <div className="col-md-auto d-flex align-items-center">
             <img src={imageUrl} className="img-fluid rounded profile-img" />
           </div>
-          <div className="d-flex flex-column justify-content-between">
+          <div className="col-md-auto d-flex align-items-center">
             <div>
               <h1>Welcome {fname + ' ' + lname}</h1>
             </div>
+            <div className="align-self-end">
+              <button
+                className="btn btn-secondary mx-3"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#userForm"
+                aria-expanded="false"
+                aria-controls="userForm"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+          <div className="collapse" id="userForm">
+            <UserForm title="Edit User" user={props.user} />
           </div>
         </div>
       </div>

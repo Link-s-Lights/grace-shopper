@@ -69,6 +69,19 @@ export const logout = () => async dispatch => {
   }
 }
 
+export const putUser = updatedUser => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put('/auth/me', {
+        ...updatedUser
+      })
+      dispatch(getUser(data))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
