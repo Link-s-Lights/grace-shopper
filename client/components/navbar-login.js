@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function NavbarLogin(props) {
   const name = props.name
+  const userType = props.userType
   const isLoggedIn = props.isLoggedIn
   const handleClick = props.handleClick
   return (
@@ -33,6 +34,15 @@ export default function NavbarLogin(props) {
                   Orders
                 </a>
               </li>
+              {userType === 'admin' ? (
+                <li>
+                  <a className="dropdown-item" href="/products/add">
+                    Add Product
+                  </a>
+                </li>
+              ) : (
+                ''
+              )}
               <li>
                 <a className="dropdown-item" href="/" onClick={handleClick}>
                   Signout
@@ -51,38 +61,3 @@ export default function NavbarLogin(props) {
     </React.Fragment>
   )
 }
-
-// {
-//   isLoggedIn ? (
-//     <div>
-//       <div className="nav-item dropdown">
-//         <div
-//           className="nav-link dropdown-toggle"
-//           id="navbarDropdown"
-//           role="button"
-//           data-toggle="dropdown"
-//           aria-haspopup="true"
-//           aria-expanded="false"
-//         >
-//           Profile
-//         </div>
-//         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-//           <NavLink to="#" className="dropdown-item">
-//             account
-//           </NavLink>
-//           <NavLink to="#" className="dropdown-item">
-//             orders
-//           </NavLink>
-//           <NavLink to="#" onClick={handleClick} className="dropdown-item">
-//             sign out
-//           </NavLink>
-//         </div>
-//       </div>
-//     </div>
-//   ) : (
-//     <div>
-//       <NavLink to="/login">Login</NavLink>
-//       <NavLink to="/signup">Sign Up</NavLink>
-//     </div>
-//   )
-// }

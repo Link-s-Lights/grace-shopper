@@ -51,7 +51,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
         stock,
         imageUrl
       })
-      createAssociations(newProduct.id, req.body.attributes)
+      await createAssociations(newProduct.id, req.body.attributes)
       res.json(newProduct)
     }
   } catch (err) {
@@ -80,6 +80,8 @@ router.put('/:id', isAuthorized, async (req, res, next) => {
       }
     )
     const updatedProduct = affectedRows
+    console.log('attributes received: ', req.body.attributes)
+
     updateAssociations(updatedProduct.id, req.body.attributes)
     updatedProduct ? res.json(updatedProduct) : res.sendStatus(304)
   } catch (err) {
@@ -94,7 +96,7 @@ router.put('/:id', isAuthorized, async (req, res, next) => {
  */
 router.delete('/:id', isAuthorized, async (req, res, next) => {
   try {
-    await Product.destroy({where: {id: req.user.id}})
+    await Product.destroy({where: {id: req.params.id}})
     res.sendStatus(204)
   } catch (err) {
     next(err)

@@ -6,7 +6,7 @@ import {emptyCart} from '../store/cart'
 import {logout} from '../store'
 import NavbarLogin from './navbar-login'
 
-const Navbar = ({handleClick, isLoggedIn, name}) => (
+const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
   <React.Fragment>
     <nav className="navbar navbar-light bg-light">
       <div className="container">
@@ -34,6 +34,7 @@ const Navbar = ({handleClick, isLoggedIn, name}) => (
         <div id="login-cart-div" className="d-flex align-items-center">
           <NavbarLogin
             name={name}
+            userType={userType}
             isLoggedIn={isLoggedIn}
             handleClick={() => handleClick()}
           />
@@ -53,6 +54,7 @@ const Navbar = ({handleClick, isLoggedIn, name}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
+    userType: state.user.type,
     name: state.user.fname
   }
 }
