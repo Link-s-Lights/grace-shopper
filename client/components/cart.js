@@ -44,6 +44,8 @@ class Cart extends React.Component {
 
   render() {
     const {lineItems} = this.props.cart
+    console.log('STATUS', this.props.cart)
+    // if (this.props.cart.status === 'cart')
     return (
       <div>
         <table className="table table-hover">

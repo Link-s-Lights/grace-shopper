@@ -136,8 +136,7 @@ export const submitOrder = order => {
   return async dispatch => {
     try {
       await axios.put('api/orders/checkout')
-      console.log('THUNK')
-      dispatch(submitActionOrder(order))
+      dispatch(emptyCart(order))
       history.push(`/orderSubmission`)
     } catch (err) {
       console.log(err)
@@ -195,8 +194,8 @@ export default function(state = initialCart, action) {
       newLineItems[action.idx].qty = action.qty
       return {...state, lineItems: newLineItems}
     case SUBMIT_ORDER:
-      console.log('REDUCER')
-      return {...state, cart: action.cart, status: 'shipped'}
+      // return {...state, status: 'shipped'}
+      return initialCart
     default:
       return state
   }
