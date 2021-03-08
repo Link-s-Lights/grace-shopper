@@ -19,6 +19,7 @@ class AddEditProduct extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.addAttribute = this.addAttribute.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.removeAttribute = this.removeAttribute.bind(this)
   }
   handleChange(evt) {
     console.log(evt.target.name)
@@ -48,13 +49,14 @@ class AddEditProduct extends React.Component {
     ]
     this.setState({attributes: newAttributes})
   }
-  async handleSubmit(evt) {
+  removeAttribute(idx) {
+    let newAttributes = [...this.state.attributes]
+    newAttributes.splice(idx, 1)
+    this.setState({attributes: newAttributes})
+  }
+  handleSubmit(evt) {
     evt.preventDefault()
-    try {
-      await this.props.updateProduct(this.state)
-    } catch (err) {
-      console.error(err)
-    }
+    this.props.updateProduct(this.state)
   }
   async handleDelete() {
     try {
@@ -81,121 +83,164 @@ class AddEditProduct extends React.Component {
   }
 
   render() {
-    const {handleChange, handleSubmit, addAttribute, handleDelete} = this
+    const {
+      handleChange,
+      handleSubmit,
+      addAttribute,
+      handleDelete,
+      removeAttribute
+    } = this
     const {name, description, imageUrl, attributes, stock, price} = this.state
     return (
-      <form id="product_form" onSubmit={handleSubmit}>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <label htmlFor="[&quot;name&quot;]">Product Name:</label>
-              </td>
-              <td>
-                <input
-                  name="[&quot;name&quot;]"
-                  onChange={handleChange}
-                  value={name}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="2">
-                <label htmlFor="[&quot;description&quot;]">Description:</label>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="2">
-                <textarea
-                  name="[&quot;description&quot;]"
-                  onChange={handleChange}
-                  value={description}
-                  rows="5"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="[&quot;imageUrl&quot;]">Image URL:</label>
-              </td>
-              <td>
-                <input
-                  name="[&quot;imageUrl&quot;]"
-                  onChange={handleChange}
-                  value={imageUrl}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="[&quot;stock&quot;]">Stock:</label>
-              </td>
-              <td>
-                <input
-                  name="[&quot;stock&quot;]"
-                  onChange={handleChange}
-                  value={stock}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="[&quot;price&quot;]">Price</label>
-              </td>
-              <td>
-                <input
-                  name="[&quot;price&quot;]"
-                  onChange={handleChange}
-                  value={price}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="2">
-                <a onClick={addAttribute}>Add attribute</a>
-              </td>
-            </tr>
-            <tr>
-              <td>Attribute</td>
-              <td>Value</td>
-            </tr>
-            {attributes.map((attribute, idx) => (
-              <tr key={attribute.id}>
+      <div className="align-items-center maxWidth">
+        <form
+          id="product_form"
+          onSubmit={handleSubmit}
+          className="align-items-center"
+        >
+          <table>
+            <tbody>
+              <tr>
                 <td>
-                  <input
-                    name={`["attribute", ${idx}]`}
-                    onChange={handleChange}
-                    value={attribute.name}
-                  />
+                  <label htmlFor="[&quot;name&quot;]">Product Name:</label>
                 </td>
                 <td>
                   <input
-                    name={`["value", ${idx}]`}
+                    name="[&quot;name&quot;]"
                     onChange={handleChange}
-                    value={attribute.productAttribute.value}
+                    value={name}
+                    className="form-control"
                   />
                 </td>
               </tr>
-            ))}
-            <tr>
-              <td colSpan="2">
-                <button type="submit">Submit</button>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="2">
-                {this.props.product.id ? (
-                  <button type="button" onClick={handleDelete}>
-                    Delete Product
+              <tr>
+                <td colSpan="2">
+                  <label htmlFor="[&quot;description&quot;]">
+                    Description:
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <textarea
+                    name="[&quot;description&quot;]"
+                    onChange={handleChange}
+                    value={description}
+                    rows="5"
+                    className="form-control maxWidth"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="[&quot;imageUrl&quot;]">Image URL:</label>
+                </td>
+                <td>
+                  <input
+                    name="[&quot;imageUrl&quot;]"
+                    onChange={handleChange}
+                    value={imageUrl}
+                    className="form-control"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="[&quot;stock&quot;]">Stock:</label>
+                </td>
+                <td>
+                  <input
+                    name="[&quot;stock&quot;]"
+                    onChange={handleChange}
+                    value={stock}
+                    className="form-control"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="[&quot;price&quot;]">Price</label>
+                </td>
+                <td>
+                  <input
+                    name="[&quot;price&quot;]"
+                    onChange={handleChange}
+                    value={price}
+                    className="form-control"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <a
+                    role="button"
+                    onClick={addAttribute}
+                    className="btn btn-link"
+                  >
+                    Add attribute
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>Attribute</td>
+                <td>Value</td>
+              </tr>
+              {attributes.map((attribute, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <input
+                      name={`["attribute", ${idx}]`}
+                      onChange={handleChange}
+                      value={attribute.name}
+                      className="form-control"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      name={`["value", ${idx}]`}
+                      onChange={handleChange}
+                      value={attribute.productAttribute.value}
+                      className="form-control"
+                    />
+                  </td>
+                  <td>
+                    <a
+                      role="button"
+                      onClick={() => removeAttribute(idx)}
+                      className="btn btn-danger"
+                    >
+                      X
+                    </a>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td>
+                  {this.props.product.id ? (
+                    <button
+                      type="button"
+                      onClick={handleDelete}
+                      className="btn btn-warning btn-lg maxWidth"
+                    >
+                      Delete Product
+                    </button>
+                  ) : (
+                    ''
+                  )}
+                </td>
+                <td>
+                  <button
+                    type="submit"
+                    className="btn btn-warning btn-lg maxWidth"
+                  >
+                    Submit
                   </button>
-                ) : (
-                  ''
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
     )
   }
 }

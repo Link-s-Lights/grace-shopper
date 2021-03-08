@@ -34,3 +34,6 @@ form div {
   width: 200px;
   height: 200px;
 }
+.maxWidth {
+  width: 100%;
+}
