@@ -35,11 +35,7 @@ class Navbar extends React.Component {
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
           <div className="container">
-            <NavLink
-              className="navbar-brand"
-              to="/products/?page=1"
-              aria-label="Home"
-            >
+            <NavLink className="navbar-brand" to="/products" aria-label="Home">
               <div className="logo" />
             </NavLink>
             <div className="d-flex flex-fill">

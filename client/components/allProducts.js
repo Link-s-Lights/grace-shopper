@@ -19,10 +19,19 @@ export class AllProducts extends React.Component {
   }
   render() {
     const products = this.props.products
+    console.log(this.props.location.search)
+    if (!this.props.location.search) {
+      this.props.location.search = '?size=12&page=1'
+    }
     if (this.props.loading === false) {
       return (
         <div>
-          <h1>All Products</h1>
+          <div className="d-flex justify-content-between">
+            <h1>All Products</h1>
+            <div>
+              <a href={process.env}>12</a>
+            </div>
+          </div>
           <div className="container">
             <div className="row row-cols-2 g-2 g-lg-2">
               {products.map(product => (
