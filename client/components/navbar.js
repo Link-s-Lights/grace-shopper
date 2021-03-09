@@ -38,7 +38,7 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
             isLoggedIn={isLoggedIn}
             handleClick={() => handleClick()}
           />
-          <NavLink to="/cart" className="btn btn-warning mt-0">
+          <NavLink to="/cart" className="btn btn-primary mt-0">
             <i className="bi-cart3" />
             Shopping Cart
           </NavLink>
