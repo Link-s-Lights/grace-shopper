@@ -21,6 +21,8 @@ class Cart extends React.Component {
     this.updateQty = this.updateQty.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
   }
+
+  // Get it outta here (async/await that is)
   async saveCart() {
     try {
       await saveCart()
@@ -86,7 +88,7 @@ class Cart extends React.Component {
             ))}
           </tbody>
         </table>
-        Subtotal:{' '}
+        Subtotal: {/* Put calculation in helper js file */}
         {lineItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
         <div>
           <button onClick={() => this.props.submitCart(this.props.cart)}>

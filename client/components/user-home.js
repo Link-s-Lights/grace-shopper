@@ -20,7 +20,7 @@ export const UserHome = props => {
             <div>
               <h1>Welcome {fname + ' ' + lname}</h1>
             </div>
-            <div className="align-self-end">
+            <div>
               <button
                 className="btn btn-secondary mx-3"
                 type="button"
