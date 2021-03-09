@@ -38,7 +38,6 @@ const deleteActionProduct = product => {
 export const setProducts = query => {
   return async dispatch => {
     try {
-      console.log('query: ', query)
       const {data} = await axios.get(`/api/products/${query}`)
       dispatch(getActionProducts(data.rows, data.count))
     } catch (err) {

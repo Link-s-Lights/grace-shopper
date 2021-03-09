@@ -26,7 +26,7 @@ const PaginationControlPages = ({currentPage, maxNumPages}) => {
         key={i}
         className={'page-item ' + (i + 1 === currentPage ? 'active' : '')}
       >
-        <a className="page-link link-warning" href={`/products/?page=${i + 1}`}>
+        <a className="page-link link-primary" href={`/products/?page=${i + 1}`}>
           {i + 1}
         </a>
       </li>
@@ -46,7 +46,7 @@ export default function PaginationControls(props) {
       <ul className="mt-3 pagination justify-content-center">
         <li className="page-item">
           <a
-            className="page-link link-warning"
+            className="page-link link-primary"
             href={`/products/?page=${Math.max(1, currentPage - 1)}`}
           >
             <i className="bi-caret-left-fill" />
@@ -58,7 +58,7 @@ export default function PaginationControls(props) {
         />
         <li className="page-item">
           <a
-            className="page-link link-warning"
+            className="page-link link-primary"
             href={`/products/?page=${Math.min(currentPage + 1, maxNumPages)}`}
           >
             <i className="bi-caret-right-fill" />

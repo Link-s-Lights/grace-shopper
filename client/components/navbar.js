@@ -7,55 +7,80 @@ import {logout} from '../store'
 import NavbarLogin from './navbar-login'
 import {setProducts} from '../store/products'
 
-const Navbar = ({handleClick, handleSearch, isLoggedIn, userType, name}) => (
-  <React.Fragment>
-    <nav className="navbar navbar-light bg-light">
-      <div className="container">
-        <NavLink
-          className="navbar-brand"
-          to="/products/?page=1"
-          aria-label="Home"
-        >
-          <div className="logo" />
-        </NavLink>
-        <div className="d-flex flex-fill">
-          <form
-            className="input-group"
-            onSubmit={event => handleSearch(event.target.value)}
-          >
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Find the perfect bulb"
-              aria-label="Search Bar"
-              aria-describedby="button-addon2"
-            />
-            <button
-              className="btn btn-outline-secondary"
-              type="submit"
-              id="button-addon2"
-              aria-label="Search Button"
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {query: ''}
+
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    this.props.handleSearch(`?keywords=${this.state.query}`)
+    this.setState({query: ''})
+    console.log(this.state)
+  }
+
+  render() {
+    const {handleClick, isLoggedIn, userType, name} = this.props
+    return (
+      <React.Fragment>
+        <nav className="navbar navbar-light bg-light">
+          <div className="container">
+            <NavLink
+              className="navbar-brand"
+              to="/products/?page=1"
+              aria-label="Home"
             >
-              <i className="bi-search" />
-            </button>
-          </form>
-        </div>
-        <div id="login-cart-div" className="d-flex align-items-center">
-          <NavbarLogin
-            name={name}
-            userType={userType}
-            isLoggedIn={isLoggedIn}
-            handleClick={() => handleClick()}
-          />
-          <NavLink to="/cart" className="btn btn-warning mt-0">
-            <i className="bi-cart3" />
-            Shopping Cart
-          </NavLink>
-        </div>
-      </div>
-    </nav>
-  </React.Fragment>
-)
+              <div className="logo" />
+            </NavLink>
+            <div className="d-flex flex-fill">
+              <form className="input-group" onSubmit={this.handleSubmit}>
+                <input
+                  type="text"
+                  name="query"
+                  className="form-control"
+                  placeholder="Find the perfect bulb"
+                  aria-label="Search Bar"
+                  aria-describedby="button-addon2"
+                  onChange={this.handleChange}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="submit"
+                  id="button-addon2"
+                  aria-label="Search Button"
+                >
+                  <i className="bi-search" />
+                </button>
+              </form>
+            </div>
+            <div id="login-cart-div" className="d-flex align-items-center">
+              <NavbarLogin
+                name={name}
+                userType={userType}
+                isLoggedIn={isLoggedIn}
+                handleClick={() => handleClick()}
+              />
+              <NavLink to="/cart" className="btn btn-warning mt-0">
+                <i className="bi-cart3" />
+                Shopping Cart
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+      </React.Fragment>
+    )
+  }
+}
 
 /**
  * CONTAINER

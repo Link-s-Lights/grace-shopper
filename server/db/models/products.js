@@ -26,15 +26,6 @@ const Product = db.define('product', {
 
 // Model Methods
 
-Product.findWithQuery = query => {
-  const {sortColumn, direction, page} = query
-  const offset = (page - 1) * 10
-  const limit = 10
-  const order = [[sortColumn, direction]]
-
-  return Product.findAndCountAll({order, limit, offset})
-}
-
 // Hooks
 
 Product.afterFind(result => {
