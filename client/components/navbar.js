@@ -13,7 +13,7 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
         <NavLink className="navbar-brand" to="/products">
           <div className="logo" />
         </NavLink>
-        <div className="d-flex flex-fill">
+        <div className="d-flex flex-fill order-sm-0 order-1">
           <div className="input-group">
             <input
               type="text"
