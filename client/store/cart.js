@@ -9,7 +9,6 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const UPDATE_ORDER = 'UPDATE_ORDER'
 const ADD_TO_CART = 'ADD_TO_CART'
 const EMPTY_CART = 'EMPTY_CART'
-const SUBMIT_ORDER = 'SUBMIT_ORDER'
 const REMOVE_ITEM = 'REMOVE_ITEM'
 const UPDATE_QTY = 'UPDATE_QTY'
 const LOAD_CART = 'LOAD_CART'
@@ -41,8 +40,11 @@ export const addToCart = product => ({
 })
 
 export const emptyCart = () => {
-  window.localStorage.removeItem('cart')
-  return {type: EMPTY_CART}
+  // window.localStorage.removeItem('cart')
+  // return {type: EMPTY_CART}
+  return {
+    type: EMPTY_CART
+  }
 }
 
 export const removeItem = idx => ({
@@ -60,13 +62,6 @@ export const loadCart = cart => ({
   type: LOAD_CART,
   cart
 })
-
-const submitActionOrder = cart => {
-  return {
-    type: SUBMIT_ORDER,
-    cart
-  }
-}
 
 //THUNK CREATORS
 export const getCart = () => {
@@ -181,6 +176,8 @@ export default function(state = initialCart, action) {
         return {...state, lineItems: updatedLineItems}
       }
     case EMPTY_CART:
+      window.localStorage.removeItem('cart')
+      // return {type: EMPTY_CART}
       return initialCart
     case REMOVE_ITEM:
       let splicedArray = state.lineItems
@@ -193,9 +190,6 @@ export default function(state = initialCart, action) {
       let newLineItems = [...state.lineItems]
       newLineItems[action.idx].qty = action.qty
       return {...state, lineItems: newLineItems}
-    case SUBMIT_ORDER:
-      // return {...state, status: 'shipped'}
-      return initialCart
     default:
       return state
   }
