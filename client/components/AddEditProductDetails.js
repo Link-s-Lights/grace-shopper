@@ -220,7 +220,7 @@ class AddEditProduct extends React.Component {
                     <button
                       type="button"
                       onClick={handleDelete}
-                      className="btn btn-warning btn-lg maxWidth"
+                      className="btn btn-primary btn-lg maxWidth"
                     >
                       Delete Product
                     </button>
@@ -231,7 +231,7 @@ class AddEditProduct extends React.Component {
                 <td>
                   <button
                     type="submit"
-                    className="btn btn-warning btn-lg maxWidth"
+                    className="btn btn-primary btn-lg maxWidth"
                   >
                     Submit
                   </button>
