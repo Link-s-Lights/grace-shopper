@@ -13,7 +13,8 @@ User.hasMany(ShippingAddress)
 ShippingAddress.belongsTo(User)
 User.hasMany(Order)
 Order.belongsTo(User)
-Order.hasOne(ShippingAddress)
+Order.belongsTo(ShippingAddress)
+ShippingAddress.hasMany(Order)
 Order.belongsToMany(Product, {through: OrderProduct})
 Product.belongsToMany(Order, {through: OrderProduct})
 Attribute.belongsToMany(Product, {through: ProductAttribute})
@@ -24,8 +25,8 @@ Product.belongsToMany(Variation, {through: ProductGroup})
 Product.findWithQuery = query => {
   const Op = Sequelize.Op
   const {sortColumn, direction, keywords, page} = query
-  const offset = (page - 1) * 10
-  const limit = 10
+  const offset = (page - 1) * 12
+  const limit = 12
   const order = [[sortColumn, direction]]
 
   if (keywords.length) {

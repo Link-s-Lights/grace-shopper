@@ -37,3 +37,19 @@ form div {
 .maxWidth {
   width: 100%;
 }
+.addToCartDiv {
+  display: table;
+  vertical-align: middle;
+}
+.addToCartDiv h2 {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px;
+}
+.addToCartDiv > * {
+  margin: 5px;
+}
+.productImg {
+  width: 200px;
+  margin: 10px;
+}

@@ -63,7 +63,6 @@ router.get('/cart', async (req, res, next) => {
 
 router.put('/cart', async (req, res, next) => {
   try {
-    console.log('in cart router')
     if (req.user.type === 'user') {
       const [cart, newCart] = await Order.findOrCreate({
         where: {
@@ -71,19 +70,50 @@ router.put('/cart', async (req, res, next) => {
           status: 'cart'
         }
       })
-      console.log('cart attained, is new: ', newCart)
       if (!newCart) await OrderProduct.destroy({where: {orderId: cart.id}})
-      console.log('destroyed old cart lineItems')
       const lineItems = req.body.lineItems.map(item => {
         return {orderId: cart.id, productId: item.id, qty: item.qty}
       })
-      console.log('created lineItems array')
       await OrderProduct.bulkCreate(lineItems)
-      console.log('orderProducts created')
       res.sendStatus(200)
     }
   } catch (err) {
     next(err)
+  }
+})
+
+router.put('/checkout', async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'cart'
+      },
+      include: Product
+    })
+    cart.status = 'pending'
+    let outOfStock = false
+    cart.products.forEach(product => {
+      if (product.stock <= 0) {
+        console.error('OUT OF STOCK', product.name)
+        res.sendStatus(500)
+        outOfStock = true
+        cart.status = 'cart'
+      }
+    })
+    if (outOfStock === false) {
+      await Promise.all(
+        cart.products.map(product => {
+          const productQty = product.orderProduct.qty
+          product.decrement('stock', {by: productQty})
+        })
+      )
+    }
+    cart.status = 'shipped'
+    await cart.save()
+    res.send(cart)
+  } catch (err) {
+    console.log(err)
   }
 })
 

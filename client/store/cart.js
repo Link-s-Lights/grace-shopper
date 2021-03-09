@@ -9,7 +9,6 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const UPDATE_ORDER = 'UPDATE_ORDER'
 const ADD_TO_CART = 'ADD_TO_CART'
 const EMPTY_CART = 'EMPTY_CART'
-const SUBMIT_ORDER = 'SUBMIT_ORDER'
 const REMOVE_ITEM = 'REMOVE_ITEM'
 const UPDATE_QTY = 'UPDATE_QTY'
 const LOAD_CART = 'LOAD_CART'
@@ -41,8 +40,11 @@ export const addToCart = product => ({
 })
 
 export const emptyCart = () => {
-  window.localStorage.removeItem('cart')
-  return {type: EMPTY_CART}
+  // window.localStorage.removeItem('cart')
+  // return {type: EMPTY_CART}
+  return {
+    type: EMPTY_CART
+  }
 }
 
 export const removeItem = idx => ({
@@ -125,6 +127,18 @@ export const saveCart = async () => {
   window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
+export const submitOrder = order => {
+  return async dispatch => {
+    try {
+      await axios.put('api/orders/checkout')
+      dispatch(emptyCart(order))
+      history.push(`/orderSubmission`)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 //REDUCER
 
 export default function(state = initialCart, action) {
@@ -162,6 +176,8 @@ export default function(state = initialCart, action) {
         return {...state, lineItems: updatedLineItems}
       }
     case EMPTY_CART:
+      window.localStorage.removeItem('cart')
+      // return {type: EMPTY_CART}
       return initialCart
     case REMOVE_ITEM:
       let splicedArray = state.lineItems

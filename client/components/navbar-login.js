@@ -43,6 +43,15 @@ export default function NavbarLogin(props) {
               ) : (
                 ''
               )}
+              {userType === 'user' ? (
+                <li>
+                  <a className="dropdown-item" href="/home/orders">
+                    Past Orders
+                  </a>
+                </li>
+              ) : (
+                ''
+              )}
               <li>
                 <a className="dropdown-item" href="/" onClick={handleClick}>
                   Signout
