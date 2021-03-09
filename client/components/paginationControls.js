@@ -47,6 +47,7 @@ export default function PaginationControls(props) {
         <li className="page-item">
           <a
             className="page-link link-primary"
+            aria-label="Previous"
             href={`/products/?page=${Math.max(1, currentPage - 1)}`}
           >
             <i className="bi-caret-left-fill" />
@@ -59,6 +60,7 @@ export default function PaginationControls(props) {
         <li className="page-item">
           <a
             className="page-link link-primary"
+            aria-label="Next"
             href={`/products/?page=${Math.min(currentPage + 1, maxNumPages)}`}
           >
             <i className="bi-caret-right-fill" />
