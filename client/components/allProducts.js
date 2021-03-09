@@ -24,19 +24,19 @@ export class AllProducts extends React.Component {
         <div>
           <h1>All Products</h1>
           <div className="container">
-            <div className="row row-cols-2 g-2 g-lg-2">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2 g-lg-2">
               {products.map(product => (
                 <div key={product.id} className="col p-2">
                   <div className="card">
                     <div className="card-body">
-                      <a href={`/products/${product.id}`}>
+                      <Link to={`/products/${product.id}`}>
                         <img
                           className="card-img-top"
                           src="https://i.imgur.com/3jnETNw.png"
                           alt="Card image cap"
                         />
                         <h1 className="card-title">{product.name}</h1>
-                      </a>
+                      </Link>
                       <h2>${product.price}</h2>
                       <h2 className="out-of-stock">
                         {this.isInStock(product)}

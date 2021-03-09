@@ -30,7 +30,10 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const {handleClick, isLoggedIn, userType, name} = this.props
+    const {handleClick, isLoggedIn, userType, name, lineItems} = this.props
+    const cartSize = lineItems.length
+      ? lineItems.reduce((acc, val) => acc + parseInt(val.qty), 0)
+      : 0
     return (
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
@@ -42,7 +45,7 @@ class Navbar extends React.Component {
             >
               <div className="logo" />
             </NavLink>
-            <div className="d-flex flex-fill order-sm-0 order-1">
+            <div className="d-flex flex-fill order-md-0 order-1">
               <form className="input-group" onSubmit={this.handleSubmit}>
                 <input
                   type="text"
@@ -70,9 +73,15 @@ class Navbar extends React.Component {
                 isLoggedIn={isLoggedIn}
                 handleClick={() => handleClick()}
               />
-              <NavLink to="/cart" className="btn btn-warning mt-0">
+              <NavLink
+                to="/cart"
+                className="btn btn-primary position-relative mt-0"
+              >
                 <i className="bi-cart3" />
-                Shopping Cart
+                <div className="d-none d-sm-inline">Shopping Cart</div>
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                  {cartSize}
+                </span>
               </NavLink>
             </div>
           </div>
@@ -89,7 +98,8 @@ const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
     userType: state.user.type,
-    name: state.user.fname
+    name: state.user.fname,
+    lineItems: state.cart.lineItems
   }
 }
 
