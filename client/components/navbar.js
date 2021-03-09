@@ -26,7 +26,6 @@ class Navbar extends React.Component {
     event.preventDefault()
     this.props.handleSearch(`?keywords=${this.state.query}`)
     this.setState({query: ''})
-    console.log(this.state)
   }
 
   render() {

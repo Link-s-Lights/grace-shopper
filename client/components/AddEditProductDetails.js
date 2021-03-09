@@ -22,7 +22,6 @@ class AddEditProduct extends React.Component {
     this.removeAttribute = this.removeAttribute.bind(this)
   }
   handleChange(evt) {
-    console.log(evt.target.name)
     let [name, idx] = JSON.parse(evt.target.name)
     const {value} = evt.target
     let newAttributes = [...this.state.attributes]

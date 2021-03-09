@@ -70,9 +70,11 @@ Order.afterFind(result => {
     result.tax = convertToDollars(result.tax)
     result.shippingCost = convertToDollars(result.shippingCost)
     result.discountAmt = convertToDollars(result.discountAmt)
-    result.products.forEach(product => {
-      product.price = convertToDollars(product.price)
-    })
+    if (result.products) {
+      result.products.forEach(product => {
+        product.price = convertToDollars(product.price)
+      })
+    }
   }
 })
 

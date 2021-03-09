@@ -64,6 +64,21 @@ export const loadCart = cart => ({
   cart
 })
 
+//helper function
+export const saveCart = async () => {
+  const {user, cart} = store.getState()
+  if (user.id) {
+    try {
+      console.log('saving to user profile')
+      await axios.put(`/api/orders/cart`, cart)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  console.log('saving to local storage')
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+}
+
 //THUNK CREATORS
 export const getCart = () => {
   return async dispatch => {
@@ -85,6 +100,7 @@ export const getCart = () => {
       ]
       const cart = {...userCart, lineItems}
       dispatch(loadCart(cart))
+      if (localCart.lineItems.length > 0) await saveCart()
     } catch (err) {
       console.error(err)
     }
@@ -97,7 +113,7 @@ export const createOrder = (order, history) => {
       dispatch(createActionOrder(data))
       history.push('/orders')
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }
@@ -109,23 +125,9 @@ export const updateOrder = (order, history) => {
       dispatch(updateActionOrder(data))
       history.push(`/orders/${order.id}`)
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
-}
-
-export const saveCart = async () => {
-  const {user, cart} = store.getState()
-  if (user.id) {
-    try {
-      console.log('saving to user profile')
-      await axios.put(`/api/orders/cart`, cart)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  console.log('saving to local storage')
-  window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
 export const submitOrder = order => {
@@ -135,7 +137,7 @@ export const submitOrder = order => {
       dispatch(emptyCart())
       history.push(`/orderSubmission`)
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }
@@ -171,7 +173,6 @@ export default function(state = initialCart, action) {
         return {...state, lineItems: updatedLineItems}
       }
     case EMPTY_CART:
-      console.log('emptying empty cart')
       window.localStorage.removeItem('cart')
       return initialCart
     case REMOVE_ITEM:
