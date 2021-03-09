@@ -24,6 +24,8 @@ const Product = db.define('product', {
   }
 })
 
+// Model Methods
+
 // Hooks
 
 Product.afterFind(result => {

@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {setProducts} from '../store/products'
 import {Link} from 'react-router-dom'
+import PaginationControls from './paginationControls'
 
 export class AllProducts extends React.Component {
   constructor() {
@@ -9,7 +10,7 @@ export class AllProducts extends React.Component {
     this.isInStock = this.isInStock.bind(this)
   }
   async componentDidMount() {
-    await this.props.getMyProducts()
+    await this.props.getMyProducts(this.props.location.search)
   }
   isInStock(product) {
     if (product.stock <= 0) {
@@ -17,36 +18,38 @@ export class AllProducts extends React.Component {
     }
   }
   render() {
-    const productsArray = this.props.products
+    const products = this.props.products
     if (this.props.loading === false) {
       return (
         <div>
           <h1>All Products</h1>
           <div className="container">
-            <div className="row row-cols-3 g-4">
-              {productsArray.map(product => {
-                return (
-                  <div key={product.id} className="col card">
+            <div className="row row-cols-2 g-2 g-lg-2">
+              {products.map(product => (
+                <div key={product.id} className="col p-2">
+                  <div className="card">
                     <div className="card-body">
-                      <Link to={`/products/${product.id}`}>
+                      <a href={`/products/${product.id}`}>
                         <img
                           className="card-img-top"
                           src="https://i.imgur.com/3jnETNw.png"
                           alt="Card image cap"
                         />
                         <h1 className="card-title">{product.name}</h1>
-                      </Link>
-                      {/* <p>{product.description}</p> */}
+                      </a>
                       <h2>${product.price}</h2>
-                      {/* <h2>Stock: {product.stock}</h2> */}
                       <h2 className="out-of-stock">
                         {this.isInStock(product)}
                       </h2>
                     </div>
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
+            <PaginationControls
+              location={this.props.location}
+              count={this.props.count}
+            />
           </div>
         </div>
       )
@@ -59,13 +62,14 @@ export class AllProducts extends React.Component {
 const mapState = state => {
   return {
     products: state.products.products,
-    loading: state.products.loading
+    loading: state.products.loading,
+    count: state.products.count
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getMyProducts: () => dispatch(setProducts())
+    getMyProducts: query => dispatch(setProducts(query))
   }
 }
 
