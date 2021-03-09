@@ -11,9 +11,13 @@ export class SingleProduct extends React.Component {
     this.updateQty = this.updateQty.bind(this)
     this.state = {qty: 1}
   }
+
+  // Get rid of async/await
   async componentDidMount() {
     await this.props.getMySingleProduct(this.props.match.params)
   }
+
+  // Get rid of async/await
   async handleAdd() {
     try {
       this.props.addToCart(this.props.singleProduct)
