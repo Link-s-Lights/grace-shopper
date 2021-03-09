@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 export default function NavbarLogin(props) {
   const name = props.name
@@ -62,9 +63,9 @@ export default function NavbarLogin(props) {
         </div>
       ) : (
         <div>
-          <a className="nav-link" href="/login">
+          <Link className="nav-link" to="/login">
             Login
-          </a>
+          </Link>
         </div>
       )}
     </React.Fragment>

@@ -34,9 +34,10 @@ const updateActionOrder = order => {
   }
 }
 
-export const addToCart = product => ({
+export const addToCart = (product, qty) => ({
   type: ADD_TO_CART,
-  product
+  product,
+  qty
 })
 
 export const emptyCart = () => {
@@ -65,25 +66,25 @@ export const loadCart = cart => ({
 
 //THUNK CREATORS
 export const getCart = () => {
-  console.log('in get cart')
   return async dispatch => {
     try {
       const {user} = store.getState()
       // const user = {}
-      let data = {}
-      if (user.id) {
-        console.log('found user')
-        data = (await axios.get('/api/orders/cart')).data
-      } else {
-        console.log('no user cart to load')
-        data = JSON.parse(window.localStorage.getItem('cart'))
+      // let data = {}
+      const userCart = user.id
+        ? (await axios.get('/api/orders/cart')).data
+        : {lineItems: []}
+      const localCart = JSON.parse(window.localStorage.getItem('cart')) || {
+        lineItems: []
       }
-      console.log('found this cart: ', data)
-      if (data) {
-        dispatch(loadCart(data))
-      } else {
-        dispatch({type: null})
-      }
+      const lineItems = [
+        ...localCart.lineItems.filter(item =>
+          userCart.lineItems.every(product => product.id !== item.id)
+        ),
+        ...userCart.lineItems
+      ]
+      const cart = {...userCart, lineItems}
+      dispatch(loadCart(cart))
     } catch (err) {
       console.error(err)
     }
@@ -131,7 +132,7 @@ export const submitOrder = order => {
   return async dispatch => {
     try {
       await axios.put('api/orders/checkout')
-      dispatch(emptyCart(order))
+      dispatch(emptyCart())
       history.push(`/orderSubmission`)
     } catch (err) {
       console.log(err)
@@ -146,13 +147,7 @@ export default function(state = initialCart, action) {
     case LOAD_CART:
       return {
         ...state,
-        ...action.cart,
-        lineItems: [
-          ...state.lineItems.filter(item =>
-            action.cart.lineItems.every(product => product.id !== item.id)
-          ),
-          ...action.cart.lineItems
-        ]
+        ...action.cart
       }
     case CREATE_ORDER:
       return action.order
@@ -162,22 +157,22 @@ export default function(state = initialCart, action) {
       let i = state.lineItems.findIndex(item => {
         return item.id === action.product.id
       })
-      console.log('i: ', i)
       if (i === -1) {
-        console.log('not found item in cart')
         return {
           ...state,
-          lineItems: [...state.lineItems, {...action.product, qty: 1}]
+          lineItems: [...state.lineItems, {...action.product, qty: action.qty}]
         }
       } else {
-        console.log('found item in cart')
         let updatedLineItems = state.lineItems
-        updatedLineItems[i].qty++
+        updatedLineItems[i].qty = Math.min(
+          action.qty + updatedLineItems[i].qty,
+          action.product.stock
+        )
         return {...state, lineItems: updatedLineItems}
       }
     case EMPTY_CART:
+      console.log('emptying empty cart')
       window.localStorage.removeItem('cart')
-      // return {type: EMPTY_CART}
       return initialCart
     case REMOVE_ITEM:
       let splicedArray = state.lineItems

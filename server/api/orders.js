@@ -91,11 +91,13 @@ router.put('/checkout', async (req, res, next) => {
       },
       include: Product
     })
+    console.log('current user: ', req.user)
+    console.log('checkout cart products: ', cart.products)
     cart.status = 'pending'
     let outOfStock = false
     cart.products.forEach(product => {
-      if (product.stock <= 0) {
-        console.error('OUT OF STOCK', product.name)
+      if (product.stock <= product.orderProduct.qty) {
+        console.error('NOT ENOUGH STOCK', product.name)
         res.sendStatus(500)
         outOfStock = true
         cart.status = 'cart'
@@ -106,9 +108,17 @@ router.put('/checkout', async (req, res, next) => {
         cart.products.map(product => {
           const productQty = product.orderProduct.qty
           product.decrement('stock', {by: productQty})
+          product.orderProduct.subtotal = productQty * product.price
+          product.orderProduct.save()
         })
       )
     }
+    cart.tax =
+      cart.products.reduce(
+        (subTotal, product) => subTotal + product.orderProduct.subtotal,
+        0
+      ) * 0.0875
+    cart.shippingAddressId = req.user.shippingAddresses[0].id
     cart.status = 'shipped'
     await cart.save()
     res.send(cart)
