@@ -13,7 +13,7 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
         <NavLink className="navbar-brand" to="/products">
           <div className="logo" />
         </NavLink>
-        <div className="d-flex flex-fill">
+        <div className="d-flex flex-fill order-sm-0 order-1">
           <div className="input-group">
             <input
               type="text"
@@ -38,7 +38,7 @@ const Navbar = ({handleClick, isLoggedIn, userType, name}) => (
             isLoggedIn={isLoggedIn}
             handleClick={() => handleClick()}
           />
-          <NavLink to="/cart" className="btn btn-warning mt-0">
+          <NavLink to="/cart" className="btn btn-primary mt-0">
             <i className="bi-cart3" />
             Shopping Cart
           </NavLink>
