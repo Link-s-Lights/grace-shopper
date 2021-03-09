@@ -42,7 +42,7 @@ class Navbar extends React.Component {
             >
               <div className="logo" />
             </NavLink>
-            <div className="d-flex flex-fill">
+            <div className="d-flex flex-fill order-sm-0 order-1">
               <form className="input-group" onSubmit={this.handleSubmit}>
                 <input
                   type="text"
