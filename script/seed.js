@@ -6,7 +6,9 @@ const {
   ShippingAddress,
   Product,
   Attribute,
-  ProductAttribute
+  ProductAttribute,
+  Order,
+  OrderProduct
 } = require('../server/db/models')
 
 const userSeed = require('../seedfiles/users')
@@ -14,6 +16,8 @@ const addressSeed = require('../seedfiles/shippingAddresses')
 const productSeed = require('../seedfiles/products')
 const attributeSeed = require('../seedfiles/attributes')
 const productAttSeed = require('../seedfiles/productAttributes')
+const orderSeed = require('../seedfiles/orders')
+const orderProductSeed = require('../seedfiles/orderProduct')
 
 async function seed() {
   await db.sync({force: true})
@@ -29,7 +33,10 @@ async function seed() {
   console.log(`seeded ${attributes.length} attributes`)
   const productAttributes = await ProductAttribute.bulkCreate(productAttSeed)
   console.log(`seeded ${productAttributes.length} product attributes`)
-
+  const orders = await Order.bulkCreate(orderSeed)
+  console.log(`seeded ${orders.length} attributes`)
+  const orderProducts = await OrderProduct.bulkCreate(orderProductSeed)
+  console.log(`seeded ${orderProducts.length} product attributes`)
   console.log(`seeded successfully`)
 }
 

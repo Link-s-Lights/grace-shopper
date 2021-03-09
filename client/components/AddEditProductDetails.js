@@ -58,12 +58,8 @@ class AddEditProduct extends React.Component {
     evt.preventDefault()
     this.props.updateProduct(this.state)
   }
-  async handleDelete() {
-    try {
-      await this.props.deleteProduct(this.props.product)
-    } catch (err) {
-      console.error(err)
-    }
+  handleDelete() {
+    this.props.deleteProduct(this.props.product)
   }
   async componentDidMount() {
     const {id} = this.props.match.params
