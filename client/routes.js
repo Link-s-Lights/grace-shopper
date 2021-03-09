@@ -8,6 +8,7 @@ import AllProducts from './components/allProducts'
 import SingleProduct from './components/singleProduct'
 import AddEditProduct from './components/AddEditProductDetails'
 import OrderSubmission from './components/OrderSubmission'
+import {getCart} from './store/cart'
 
 /**
  * COMPONENT
@@ -15,6 +16,11 @@ import OrderSubmission from './components/OrderSubmission'
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
+      this.props.loadCart()
+    }
   }
 
   render() {
@@ -62,7 +68,8 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
-    }
+    },
+    loadCart: () => dispatch(getCart())
   }
 }
 

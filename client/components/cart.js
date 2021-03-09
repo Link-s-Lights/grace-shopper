@@ -32,7 +32,7 @@ class Cart extends React.Component {
   }
   updateQty(evt) {
     const {id, value} = evt.target
-    this.props.updateQty(id, value)
+    this.props.updateQty(id, parseInt(value, 10))
     this.saveCart()
   }
 
@@ -64,7 +64,7 @@ class Cart extends React.Component {
                 <td>{item.name}</td>
                 <td>
                   <select id={idx} onChange={this.updateQty} value={item.qty}>
-                    {Array(Math.min(10, item.stock))
+                    {Array(Math.min(Math.max(10, item.qty + 5), item.stock))
                       .fill(1)
                       .map((x, i) => (
                         <option value={i + x} key={i}>
