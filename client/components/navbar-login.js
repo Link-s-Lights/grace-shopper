@@ -18,7 +18,7 @@ export default function NavbarLogin(props) {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Welcome, {name}!
+              {name}
             </a>
             <ul
               className="dropdown-menu dropdown-menu-light"

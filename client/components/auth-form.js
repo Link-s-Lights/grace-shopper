@@ -39,7 +39,7 @@ const AuthForm = props => {
           />
         </div>
         <div>
-          <button className="btn btn-warning" type="submit">
+          <button className="btn btn-primary" type="submit">
             {displayName}
           </button>
         </div>
