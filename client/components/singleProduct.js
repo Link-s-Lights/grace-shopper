@@ -41,13 +41,13 @@ export class SingleProduct extends React.Component {
           <h2>${product.price}</h2>
           {/* <h2>Stock: {product.stock}</h2> */}
           <h2>{this.isInStock(product)}</h2>
-          <button onClick={this.handleAdd} className="btn btn-info btn-lg">
+          <button onClick={this.handleAdd} className="btn btn-primary btn-lg">
             Add to cart
           </button>
           {this.props.userType === 'admin' ? (
             <a
               href={this.props.location.pathname + '/edit'}
-              className="btn btn-info btn-lg"
+              className="btn btn-primary btn-lg"
             >
               Edit
             </a>
