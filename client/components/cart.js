@@ -1,12 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {
-  updateOrder,
-  saveCart,
-  updateQty,
-  removeItem,
-  submitOrder
-} from '../store/cart'
+import {saveCart, updateQty, removeItem, submitOrder} from '../store/cart'
 import {Link} from 'react-router-dom'
 
 class Cart extends React.Component {
@@ -108,7 +102,6 @@ const mapState = state => ({
   cart: state.cart
 })
 const mapDispatch = dispatch => ({
-  updateCart: cart => dispatch(updateOrder(cart)),
   submitCart: cart => dispatch(submitOrder(cart)),
   updateQty: (idx, qty) => dispatch(updateQty(idx, qty)),
   removeItem: idx => dispatch(removeItem(idx))

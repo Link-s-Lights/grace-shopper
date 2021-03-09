@@ -5,8 +5,6 @@ import history from '../history'
 import store from './index'
 
 //ACTION TYPES
-const CREATE_ORDER = 'CREATE_ORDER'
-const UPDATE_ORDER = 'UPDATE_ORDER'
 const ADD_TO_CART = 'ADD_TO_CART'
 const EMPTY_CART = 'EMPTY_CART'
 const REMOVE_ITEM = 'REMOVE_ITEM'
@@ -20,20 +18,6 @@ const initialCart = {
 }
 
 //ACTION CREATORS
-const createActionOrder = order => {
-  return {
-    type: CREATE_ORDER,
-    order
-  }
-}
-
-const updateActionOrder = order => {
-  return {
-    type: UPDATE_ORDER,
-    order
-  }
-}
-
 export const addToCart = (product, qty) => ({
   type: ADD_TO_CART,
   product,
@@ -41,8 +25,6 @@ export const addToCart = (product, qty) => ({
 })
 
 export const emptyCart = () => {
-  // window.localStorage.removeItem('cart')
-  // return {type: EMPTY_CART}
   return {
     type: EMPTY_CART
   }
@@ -70,7 +52,7 @@ export const saveCart = async () => {
   if (user.id) {
     try {
       console.log('saving to user profile')
-      await axios.put(`/api/orders/cart`, cart)
+      await axios.put(`/api/user/cart`, cart)
     } catch (err) {
       console.error(err)
     }
@@ -87,7 +69,7 @@ export const getCart = () => {
       // const user = {}
       // let data = {}
       const userCart = user.id
-        ? (await axios.get('/api/orders/cart')).data
+        ? (await axios.get('/api/user/cart')).data
         : {lineItems: []}
       const localCart = JSON.parse(window.localStorage.getItem('cart')) || {
         lineItems: []
@@ -106,34 +88,11 @@ export const getCart = () => {
     }
   }
 }
-export const createOrder = (order, history) => {
-  return async dispatch => {
-    try {
-      const {data} = await axios.post('/api/orders', order)
-      dispatch(createActionOrder(data))
-      history.push('/orders')
-    } catch (err) {
-      console.error(err)
-    }
-  }
-}
 
-export const updateOrder = (order, history) => {
+export const submitOrder = () => {
   return async dispatch => {
     try {
-      const {data} = await axios.put(`/api/orders/${order.id}`, order)
-      dispatch(updateActionOrder(data))
-      history.push(`/orders/${order.id}`)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-}
-
-export const submitOrder = order => {
-  return async dispatch => {
-    try {
-      await axios.put('api/orders/checkout')
+      await axios.put('api/user/checkout')
       dispatch(emptyCart())
       history.push(`/orderSubmission`)
     } catch (err) {
@@ -151,10 +110,6 @@ export default function(state = initialCart, action) {
         ...state,
         ...action.cart
       }
-    case CREATE_ORDER:
-      return action.order
-    case UPDATE_ORDER:
-      return action.order
     case ADD_TO_CART:
       let i = state.lineItems.findIndex(item => {
         return item.id === action.product.id
