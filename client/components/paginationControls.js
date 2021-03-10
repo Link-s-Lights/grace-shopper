@@ -31,7 +31,7 @@ const PaginationControlPages = ({currentPage, maxNumPages}) => {
       >
         <Link
           className="page-link link-primary"
-          href={window.location.pathname + '?' + currentUrlParams.toString()}
+          to={window.location.pathname + '?' + currentUrlParams.toString()}
         >
           {i + 1}
         </Link>
