@@ -8,6 +8,7 @@ const Product = require('./products')
 const ShippingAddress = require('./shippingAddresses')
 const Variation = require('./variation')
 const Sequelize = require('sequelize')
+const {convertToDollars, convertToPennies} = require('./utility')
 
 User.hasMany(ShippingAddress)
 ShippingAddress.belongsTo(User)
@@ -24,18 +25,40 @@ Product.belongsToMany(Variation, {through: ProductGroup})
 
 Product.findWithQuery = query => {
   const Op = Sequelize.Op
-  const {sortColumn, direction, keywords, page} = query
-  const offset = (page - 1) * 12
-  const limit = 12
-  const order = [[sortColumn, direction]]
+  const {
+    sortColumn,
+    showOutOfStock,
+    direction,
+    priceMin,
+    priceMax,
+    keywords,
+    page,
+    size
+  } = query
+
+  const offset = (page - 1) * size
+  const limit = size
+  const order = [[sortColumn, direction], ['name', direction]]
+
+  const priceRange = {
+    price: {
+      [Op.and]: [
+        {[Op.gte]: convertToPennies(priceMin)},
+        {[Op.lte]: convertToPennies(priceMax)}
+      ]
+    }
+  }
+  console.log(priceRange)
+  const outOfStock = showOutOfStock === 'true' ? {} : {stock: {[Op.gt]: 0}}
 
   if (keywords.length) {
-    console.log('keywords: ', keywords)
     return Product.findAndCountAll({
       order,
       limit,
       offset,
       where: {
+        ...outOfStock,
+        ...priceRange,
         name: {
           [Op.iLike]: {
             [Op.any]: `{%${keywords}%}`
@@ -48,7 +71,7 @@ Product.findWithQuery = query => {
     order,
     limit,
     offset,
-    include: [{model: Attribute}]
+    where: {...outOfStock, ...priceRange}
   })
 }
 

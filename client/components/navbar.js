@@ -44,13 +44,9 @@ class Navbar extends React.Component {
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
           <div className="container">
-            <NavLink
-              className="navbar-brand"
-              to="/products/?page=1"
-              aria-label="Home"
-            >
+            <a className="navbar-brand" href="/products" aria-label="Home">
               <div className="logo" />
-            </NavLink>
+            </a>
             <div className="d-flex flex-fill order-md-0 order-1">
               <form className="input-group" onSubmit={this.handleSubmit}>
                 <input

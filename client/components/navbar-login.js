@@ -30,7 +30,6 @@ export default function NavbarLogin(props) {
                   Profile
                 </a>
               </li>
-              <li />
               {userType === 'admin' ? (
                 <li>
                   <a className="dropdown-item" href="/products/add">
@@ -43,7 +42,7 @@ export default function NavbarLogin(props) {
               {userType === 'user' ? (
                 <li>
                   <a className="dropdown-item" href="/home/orders">
-                    Past Orders
+                    Orders
                   </a>
                 </li>
               ) : (

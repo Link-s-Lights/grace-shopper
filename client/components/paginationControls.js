@@ -20,13 +20,18 @@ const PaginationControlPages = ({currentPage, maxNumPages}) => {
   }
 
   const pages = []
+  let currentUrlParams = new URLSearchParams(window.location.search)
   for (let i = start; i < end; i++) {
+    currentUrlParams.set('page', i + 1)
     pages.push(
       <li
         key={i}
         className={'page-item ' + (i + 1 === currentPage ? 'active' : '')}
       >
-        <a className="page-link link-primary" href={`/products/?page=${i + 1}`}>
+        <a
+          className="page-link link-primary"
+          href={window.location.pathname + '?' + currentUrlParams.toString()}
+        >
           {i + 1}
         </a>
       </li>
@@ -40,7 +45,7 @@ export default function PaginationControls(props) {
   const currentPage = parseInt(
     new URLSearchParams(props.location.search).get('page')
   )
-  const maxNumPages = props.count / 10
+  const maxNumPages = Math.ceil(props.count / props.size)
   return (
     <nav className="justify-content-center" aria-label="Page navigation">
       <ul className="mt-3 pagination justify-content-center">
