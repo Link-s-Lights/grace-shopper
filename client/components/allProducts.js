@@ -78,24 +78,24 @@ export class AllProducts extends React.Component {
             <div className="d-flex align-items-center">
               <div>
                 View:
-                <a
-                  href={this.updateUrlParams('size', 12)}
+                <Link
+                  to={this.updateUrlParams('size', 12)}
                   className="link-primary m-2"
                 >
                   12
-                </a>
-                <a
-                  href={this.updateUrlParams('size', 24)}
+                </Link>
+                <Link
+                  to={this.updateUrlParams('size', 24)}
                   className="link-primary m-2"
                 >
                   24
-                </a>
-                <a
-                  href={this.updateUrlParams('size', 48)}
+                </Link>
+                <Link
+                  to={this.updateUrlParams('size', 48)}
                   className="link-primary m-2"
                 >
                   48
-                </a>
+                </Link>
               </div>
               <button
                 className="btn btn-sm btn-secondary mx-3"
