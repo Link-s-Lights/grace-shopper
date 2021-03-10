@@ -4,17 +4,36 @@ import {setProducts} from '../store/products'
 import {Link} from 'react-router-dom'
 import PaginationControls from './paginationControls'
 import FilterForm from './FilterForm'
+import {addToCart, saveCart} from '../store/cart'
+import AddItemToast from './Toast'
 
 export class AllProducts extends React.Component {
   constructor() {
     super()
     this.isInStock = this.isInStock.bind(this)
     this.checkPathAndRedirect = this.checkPathAndRedirect.bind(this)
+    this.handleAdd = this.handleAdd.bind(this)
+    this.setShow = this.setShow.bind(this)
+    this.state = {qty: 1, show: false}
   }
 
   async componentDidMount() {
     this.checkPathAndRedirect()
     await this.props.getMyProducts(this.props.location.search)
+  }
+
+  async handleAdd(product) {
+    try {
+      this.props.addToCart(product, this.state.qty)
+      this.setShow()
+      await saveCart()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  setShow() {
+    this.setState({show: !this.state.show})
   }
 
   componentDidUpdate(prevProps) {
@@ -102,13 +121,22 @@ export class AllProducts extends React.Component {
                     <div className="card-body">
                       <Link to={`/products/${product.id}`}>
                         <img
-                          className="card-img-top"
-                          src="https://i.imgur.com/3jnETNw.png"
+                          className="card-img-top item_image"
+                          src={product.imageUrl}
                           alt="Card image cap"
                         />
                         <h1 className="card-title">{product.name}</h1>
                       </Link>
-                      <h2>${product.price}</h2>
+                      <div className="d-flex justify-content-between">
+                        <h2>${product.price}</h2>
+                        <button
+                          onClick={() => this.handleAdd(product)}
+                          className="btn btn-primary btn-sm"
+                          type="button"
+                        >
+                          Add to cart
+                        </button>
+                      </div>
                       <h2 className="out-of-stock">
                         {this.isInStock(product)}
                       </h2>
@@ -123,6 +151,11 @@ export class AllProducts extends React.Component {
               size={currentUrlParams.get('size')}
             />
           </div>
+          <AddItemToast
+            name={name}
+            show={this.state.show}
+            setShow={this.setShow}
+          />
         </div>
       )
     } else {
@@ -147,7 +180,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getMyProducts: query => dispatch(setProducts(query))
+    getMyProducts: query => dispatch(setProducts(query)),
+    addToCart: (product, qty) => dispatch(addToCart(product, qty))
   }
 }
 
