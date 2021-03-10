@@ -140,7 +140,7 @@ class UserForm extends React.Component {
               <div className="col">
                 <input
                   type="text"
-                  name="State"
+                  name="state"
                   value={state.shippingAddresses[0].state}
                   className="form-control"
                   placeholder="State"
@@ -151,7 +151,7 @@ class UserForm extends React.Component {
               <div className="col">
                 <input
                   type="text"
-                  name="Zip"
+                  name="zip"
                   value={state.shippingAddresses[0].zip}
                   className="form-control"
                   placeholder="Zip"
