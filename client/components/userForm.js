@@ -5,7 +5,8 @@ import {putUser} from '../store/user'
 const INITIAL_STATE = {
   fname: '',
   lname: '',
-  email: ''
+  email: '',
+  shippingAddresses: [{line1: '', line2: '', city: '', state: '', zip: ''}]
 }
 
 class UserForm extends React.Component {
@@ -18,9 +19,22 @@ class UserForm extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    if (
+      ['city', 'state', 'line1', 'line2', 'zip'].includes(event.target.name)
+    ) {
+      this.setState({
+        shippingAddresses: [
+          {
+            ...this.state.shippingAddresses[0],
+            [event.target.name]: event.target.value
+          }
+        ]
+      })
+    } else {
+      this.setState({
+        [event.target.name]: event.target.value
+      })
+    }
   }
 
   handleSubmit(event) {
@@ -78,6 +92,65 @@ class UserForm extends React.Component {
                 placeholder="name@example.com"
                 onChange={this.handleChange}
               />
+            </div>
+            <div className="row mb-3">
+              <div className="col">
+                <input
+                  type="text"
+                  name="line1"
+                  value={state.shippingAddresses[0].line1}
+                  className="form-control"
+                  placeholder="Address Line 1"
+                  aria-label="Address Line 1"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="text"
+                  name="line2"
+                  value={state.shippingAddresses[0].line2}
+                  className="form-control"
+                  placeholder="Address Line 2"
+                  aria-label="Address Line 2"
+                  onChange={this.handleChange}
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col">
+                <input
+                  type="text"
+                  name="city"
+                  value={state.shippingAddresses[0].city}
+                  className="form-control"
+                  placeholder="City"
+                  aria-label="City"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="text"
+                  name="State"
+                  value={state.shippingAddresses[0].state}
+                  className="form-control"
+                  placeholder="State"
+                  aria-label="State"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="text"
+                  name="Zip"
+                  value={state.shippingAddresses[0].zip}
+                  className="form-control"
+                  placeholder="Zip"
+                  aria-label="Zip"
+                  onChange={this.handleChange}
+                />
+              </div>
             </div>
             <button
               type="submit"
