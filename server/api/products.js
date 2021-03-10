@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 const router = require('express').Router()
 const isAuthorized = require('./gatekeeper')
 const {Product, Attribute} = require('../db/models')
@@ -9,14 +10,15 @@ module.exports = router
  */
 router.get('/', async (req, res, next) => {
   try {
-    console.log(req.query.sortColumn)
     const query = {
       keywords: req.query.keywords ? req.query.keywords.split(' ') : [],
       sortColumn: req.query.sortColumn || 'id',
       direction: req.query.direction || 'ASC',
       showOutOfStock: req.query.showOutOfStock || true,
       page: req.query.page || 1,
-      size: req.query.size || 12
+      size: req.query.size || 12,
+      priceMin: parseInt(req.query.priceMin) || 0,
+      priceMax: parseInt(req.query.priceMax) || Number.MAX_SAFE_INTEGER
     }
     console.log('router query: ', query)
     const {count, rows} = await Product.findWithQuery(query)

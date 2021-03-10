@@ -5,7 +5,9 @@ import {putUser} from '../store/user'
 const INITIAL_STATE = {
   sortColumn: 'id',
   direction: true,
-  showOutOfStock: true
+  showOutOfStock: true,
+  priceMin: '',
+  priceMax: ''
 }
 
 class FilterForm extends React.Component {
@@ -113,7 +115,31 @@ class FilterForm extends React.Component {
               </div>
             </div>
             <div className="row mb-3">
-              <div id="filterBy">Filter By:</div>
+              <div id="filterBy">
+                Filter Price:
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    placeholder="from"
+                    aria-label="priceMin"
+                    name="priceMin"
+                    value={state.priceMin}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="col">
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    placeholder="to"
+                    aria-label="priceMax"
+                    name="priceMax"
+                    value={state.priceMax}
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className="row mb-3">
               <div className="form-check form-switch">
