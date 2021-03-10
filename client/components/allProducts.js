@@ -14,7 +14,7 @@ export class AllProducts extends React.Component {
     this.checkPathAndRedirect = this.checkPathAndRedirect.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.setShow = this.setShow.bind(this)
-    this.state = {qty: 1, show: false}
+    this.state = {qty: 1, show: false, name: ''}
   }
 
   async componentDidMount() {
@@ -25,15 +25,16 @@ export class AllProducts extends React.Component {
   async handleAdd(product) {
     try {
       this.props.addToCart(product, this.state.qty)
-      this.setShow()
+
+      this.setShow(product.name)
       await saveCart()
     } catch (err) {
       console.error(err)
     }
   }
 
-  setShow() {
-    this.setState({show: !this.state.show})
+  setShow(name) {
+    this.setState({show: !this.state.show, name: name})
   }
 
   componentDidUpdate(prevProps) {
@@ -71,7 +72,7 @@ export class AllProducts extends React.Component {
 
     if (this.props.loading === false) {
       return (
-        <div>
+        <div className="position-relative">
           <div className="d-flex justify-content-between align-items-center mt-2">
             <h1>All Products</h1>
             <div className="d-flex align-items-center">
@@ -152,7 +153,7 @@ export class AllProducts extends React.Component {
             />
           </div>
           <AddItemToast
-            name={name}
+            name={this.state.name}
             show={this.state.show}
             setShow={this.setShow}
           />

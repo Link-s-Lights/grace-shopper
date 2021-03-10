@@ -49,6 +49,12 @@ router.get('/me', (req, res) => {
 router.put('/me', async (req, res, next) => {
   try {
     const {email, password, fname, lname, phone, imageUrl} = req.body
+    const {line1, line2, city, state, zip} = req.body.shippingAddresses[0]
+    await ShippingAddress.update(
+      {line1, line2, city, state, zip},
+      {where: {userId: req.user.id}, plain: true}
+    )
+    console.log('address updated')
     const [numberOfAffectedRows, affectedRows] = await User.update(
       {
         email,
@@ -61,10 +67,18 @@ router.put('/me', async (req, res, next) => {
       {
         where: {id: req.user.id},
         returning: true,
-        plain: true
+        plain: true,
+        include: ShippingAddress
       }
     )
-    affectedRows ? res.json(affectedRows) : res.sendStatus(304)
+    affectedRows
+      ? res.json(
+          await User.findOne({
+            where: {id: req.user.id},
+            include: ShippingAddress
+          })
+        )
+      : res.sendStatus(304)
   } catch (err) {
     next(err)
   }
