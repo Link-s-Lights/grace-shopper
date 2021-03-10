@@ -24,13 +24,14 @@ Product.belongsToMany(Variation, {through: ProductGroup})
 
 Product.findWithQuery = query => {
   const Op = Sequelize.Op
-  const {sortColumn, direction, keywords, page} = query
-  const offset = (page - 1) * 12
-  const limit = 12
-  const order = [[sortColumn, direction]]
+  const {sortColumn, direction, keywords, page, size} = query
+  const offset = (page - 1) * size
+  const limit = size
+  const order = [[sortColumn, direction], ['name', direction]]
+
+  console.log(order)
 
   if (keywords.length) {
-    console.log('keywords: ', keywords)
     return Product.findAndCountAll({
       order,
       limit,
@@ -47,8 +48,7 @@ Product.findWithQuery = query => {
   return Product.findAndCountAll({
     order,
     limit,
-    offset,
-    include: [{model: Attribute}]
+    offset
   })
 }
 

@@ -14,7 +14,8 @@ router.get('/', async (req, res, next) => {
       keywords: req.query.keywords ? req.query.keywords.split(' ') : [],
       sortColumn: req.query.sortColumn || 'id',
       direction: req.query.direction || 'ASC',
-      page: +req.query.page || 1
+      page: req.query.page || 1,
+      size: req.query.size || 12
     }
     console.log('router query: ', query)
     const {count, rows} = await Product.findWithQuery(query)
