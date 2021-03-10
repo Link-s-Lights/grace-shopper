@@ -33,7 +33,7 @@ export class AllProducts extends React.Component {
     }
   }
 
-  setShow(name) {
+  setShow(name = '') {
     this.setState({show: !this.state.show, name: name})
   }
 
