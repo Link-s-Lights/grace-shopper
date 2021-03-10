@@ -36,10 +36,9 @@ const Message = ({message}) => (
   </section>
 )
 export default function OrderSubmission(props) {
-  console.log('PROPS', props)
-  const emptyCart = function() {
-    props.submitCart(props.cart)
-  }
+  // const emptyCart = function() {
+  //   props.submitCart(props.cart)
+  // }
   const [message, setMessage] = useState('')
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
@@ -71,7 +70,7 @@ export default function OrderSubmission(props) {
       const session = await response.json()
       // When the customer clicks on the button, redirect them to Checkout.
       console.log('SESSION', session.id)
-      emptyCart()
+      // emptyCart()
       await stripe.redirectToCheckout({
         sessionId: session.id
       })
