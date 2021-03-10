@@ -39,19 +39,15 @@ export const updateProduct = (product, history) => {
   return async dispatch => {
     try {
       let data = {}
-      console.log('in thunk for product update')
       if (product.new) {
-        console.log('attempting to post a new product')
-        data = (await axios.post(`/api/products/`, product)).data
+        data = (await axios.post(`/api/admin/products/`, product)).data
       } else {
-        console.log('attempting to update an old product')
-        data = (await axios.put(`/api/products/${product.id}`, product)).data
+        data = (await axios.put(`/api/admin/products/${product.id}`, product))
+          .data
       }
-      console.log('product updated/created, sending to store')
-      dispatch(addActionProduct(data))
       history.push(`/products/${data.id}`)
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }

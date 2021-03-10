@@ -1,19 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {
-  updateOrder,
-  createOrder,
-  saveCart,
-  updateQty,
-  removeItem,
-  getCart,
-  submitOrder
-} from '../store/cart'
-
-let selectArray = []
-for (let i = 1; i <= 10; i++) {
-  selectArray.push(i)
-}
+import {saveCart, updateQty, removeItem, submitOrder} from '../store/cart'
+import {Link} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor(props) {
@@ -23,46 +11,52 @@ class Cart extends React.Component {
   }
 
   // Get it outta here (async/await that is)
-  async saveCart() {
-    try {
-      await saveCart()
-    } catch (err) {
-      console.error(err)
-    }
-  }
   updateQty(evt) {
     const {id, value} = evt.target
     this.props.updateQty(id, parseInt(value, 10))
-    this.saveCart()
+    saveCart()
   }
 
   handleRemove(evt) {
     const {id} = evt.target
     this.props.removeItem(id)
+    saveCart()
   }
-  async componentDidMount() {
-    await this.props.getCart()
+  calcSubtotal() {
+    return this.formatPrice(
+      this.props.cart.lineItems.reduce(
+        (acc, item) => acc + item.qty * item.price,
+        0
+      )
+    )
   }
-
+  formatPrice(price) {
+    return price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    })
+  }
   render() {
     const {lineItems} = this.props.cart
-    console.log('STATUS', this.props.cart)
-    // if (this.props.cart.status === 'cart')
+    const {formatPrice} = this
+    const subtotal = this.calcSubtotal()
     return (
       <div>
         <table className="table table-hover">
           <tbody>
             <tr>
               <th>Product Name</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>remove</th>
+              <th className="text-end">Qty</th>
+              <th className="text-end">Price</th>
+              <th className="text-end">Total</th>
+              <th className="text-end">remove</th>
             </tr>
             {lineItems.map((item, idx) => (
               <tr key={item.id}>
-                <td>{item.name}</td>
                 <td>
+                  <Link to={`/products/${item.id}`}>{item.name}</Link>
+                </td>
+                <td className="text-end">
                   <select id={idx} onChange={this.updateQty} value={item.qty}>
                     {Array(Math.min(Math.max(10, item.qty + 5), item.stock))
                       .fill(1)
@@ -73,9 +67,11 @@ class Cart extends React.Component {
                       ))}
                   </select>
                 </td>
-                <td>{item.price}</td>
-                <td>{item.qty * item.price}</td>
-                <td>
+                <td className="text-end">{formatPrice(item.price)}</td>
+                <td className="text-end">
+                  {formatPrice(item.qty * item.price)}
+                </td>
+                <td className="text-end">
                   <a
                     id={idx}
                     onClick={this.handleRemove}
@@ -88,10 +84,12 @@ class Cart extends React.Component {
             ))}
           </tbody>
         </table>
-        Subtotal: {/* Put calculation in helper js file */}
-        {lineItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+        Subtotal: {subtotal}
         <div>
-          <button onClick={() => this.props.submitCart(this.props.cart)}>
+          <button
+            type="button"
+            onClick={() => this.props.submitCart(this.props.cart)}
+          >
             Checkout
           </button>
         </div>
@@ -104,11 +102,9 @@ const mapState = state => ({
   cart: state.cart
 })
 const mapDispatch = dispatch => ({
-  updateCart: cart => dispatch(updateOrder(cart)),
   submitCart: cart => dispatch(submitOrder(cart)),
   updateQty: (idx, qty) => dispatch(updateQty(idx, qty)),
-  removeItem: idx => dispatch(removeItem(idx)),
-  getCart: () => dispatch(getCart())
+  removeItem: idx => dispatch(removeItem(idx))
 })
 
 export default connect(mapState, mapDispatch)(Cart)
