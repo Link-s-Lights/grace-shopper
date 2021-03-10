@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link} from 'react-router-dom'
 import {emptyCart} from '../store/cart'
 import {logout} from '../store'
 import NavbarLogin from './navbar-login'
@@ -10,10 +10,11 @@ import {setProducts} from '../store/products'
 class Navbar extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {query: ''}
+    this.state = {query: '', audio: new Audio('/SSBB_ToonLink_Attack3.mp3')}
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleChange(event) {
@@ -26,6 +27,10 @@ class Navbar extends React.Component {
     event.preventDefault()
     this.props.handleSearch(`?keywords=${this.state.query}`)
     this.setState({query: ''})
+  }
+
+  handleClick() {
+    this.state.audio.play()
   }
 
   render() {
@@ -44,9 +49,14 @@ class Navbar extends React.Component {
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
           <div className="container">
-            <a className="navbar-brand" href="/products" aria-label="Home">
+            <Link
+              className="navbar-brand"
+              to="/products?page=1&size=12"
+              aria-label="Home"
+              onClick={this.handleClick}
+            >
               <div className="logo" />
-            </a>
+            </Link>
             <div className="d-flex flex-fill order-md-0 order-1">
               <form className="input-group" onSubmit={this.handleSubmit}>
                 <input
