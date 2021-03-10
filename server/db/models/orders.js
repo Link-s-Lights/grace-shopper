@@ -54,23 +54,36 @@ Order.prototype.getTotalCost = async () => {
 
 // Hooks
 
-Order.afterFind(order => {
-  if (order) {
-    order.tax = convertToDollars(order.tax)
-    order.shippingCost = convertToDollars(order.shippingCost)
-    order.discountAmt = convertToDollars(order.discountAmt)
+Order.afterFind(result => {
+  if (Array.isArray(result)) {
+    result.forEach(order => {
+      order.tax = convertToDollars(order.tax)
+      order.shippingCost = convertToDollars(order.shippingCost)
+      order.discountAmt = convertToDollars(order.discountAmt)
+      order.products.forEach(product => {
+        product.orderProduct.subtotal = convertToDollars(
+          product.orderProduct.subtotal
+        )
+      })
+    })
+  } else if (result) {
+    result.tax = convertToDollars(result.tax)
+    result.shippingCost = convertToDollars(result.shippingCost)
+    result.discountAmt = convertToDollars(result.discountAmt)
+    if (result.products) {
+      result.products.forEach(product => {
+        product.price = convertToDollars(product.price)
+      })
+    }
   }
 })
 
 Order.beforeValidate(order => {
-  console.log('in beforeValidate Order hook')
-  console.log('order: ', order)
   if (order) {
     order.tax = convertToPennies(order.tax)
     order.shippingCost = convertToPennies(order.shippingCost)
     order.discountAmt = convertToPennies(order.discountAmt)
   }
-  console.log('exiting hook')
 })
 
 Order.beforeBulkCreate(orders => {

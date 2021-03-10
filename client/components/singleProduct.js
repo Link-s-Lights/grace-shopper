@@ -20,7 +20,8 @@ export class SingleProduct extends React.Component {
   // Get rid of async/await
   async handleAdd() {
     try {
-      this.props.addToCart(this.props.singleProduct)
+      console.log('qty to add: ', this.state.qty)
+      this.props.addToCart(this.props.singleProduct, this.state.qty)
       await saveCart()
     } catch (err) {
       console.error(err)
@@ -81,7 +82,7 @@ export class SingleProduct extends React.Component {
                 </h2>
                 <button
                   onClick={this.handleAdd}
-                  className="btn btn-warning btn-lg"
+                  className="btn btn-primary btn-lg"
                   type="button"
                 >
                   Add to cart
@@ -95,7 +96,7 @@ export class SingleProduct extends React.Component {
             {this.props.userType === 'admin' ? (
               <a
                 href={this.props.location.pathname + '/edit'}
-                className="btn btn-warning btn-lg"
+                className="btn btn-primary btn-lg"
               >
                 Edit
               </a>
@@ -123,7 +124,7 @@ const mapDispatch = dispatch => {
   return {
     getMySingleProduct: singleProduct =>
       dispatch(getSingleProduct(singleProduct)),
-    addToCart: product => dispatch(addToCart(product))
+    addToCart: (product, qty) => dispatch(addToCart(product, qty))
   }
 }
 

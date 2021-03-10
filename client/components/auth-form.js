@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
-import {getCart, saveCart} from '../store/cart'
 
 /**
  * COMPONENT
@@ -84,8 +83,6 @@ const mapDispatch = dispatch => {
         const email = evt.target.email.value
         const password = evt.target.password.value
         await dispatch(auth(email, password, formName))
-        await dispatch(getCart())
-        await saveCart()
       } catch (err) {
         console.error(err)
       }

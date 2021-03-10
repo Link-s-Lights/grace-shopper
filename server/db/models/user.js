@@ -49,6 +49,25 @@ const User = db.define('user', {
   }
 })
 
+User.updateOrCreate = (where, user) => {
+  // First try to find the record
+  return User.findOne({where: where}).then(function(foundItem) {
+    if (!foundItem) {
+      // Item not found, create a new one
+      return User.create(user).then(function(item) {
+        return [item, true]
+      })
+    }
+    // Found an item, update it
+    return User.update(user, {returning: true, where: where}).then(function(
+      array
+    ) {
+      console.log('mark: ', array[1][0])
+      return [array[1][0], false]
+    })
+  })
+}
+
 module.exports = User
 
 /**

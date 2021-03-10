@@ -26,14 +26,20 @@ class Navbar extends React.Component {
     event.preventDefault()
     this.props.handleSearch(`?keywords=${this.state.query}`)
     this.setState({query: ''})
-    console.log(this.state)
   }
 
   render() {
-    const {handleClick, isLoggedIn, userType, name, lineItems} = this.props
-    const cartSize = lineItems.length
-      ? lineItems.reduce((acc, val) => acc + parseInt(val.qty), 0)
-      : 0
+    const {
+      handleClick,
+      isLoggedIn,
+      userType,
+      name,
+      lineItems,
+      cartSize
+    } = this.props
+    // const cartSize = lineItems.length
+    //   ? lineItems.reduce((acc, val) => acc + parseInt(val.qty), 0)
+    //   : 0
     return (
       <React.Fragment>
         <nav className="navbar navbar-light bg-light">
@@ -95,7 +101,8 @@ const mapState = state => {
     isLoggedIn: !!state.user.id,
     userType: state.user.type,
     name: state.user.fname,
-    lineItems: state.cart.lineItems
+    lineItems: state.cart.lineItems,
+    cartSize: state.cart.lineItems.reduce((acc, cv) => acc + cv.qty, 0)
   }
 }
 

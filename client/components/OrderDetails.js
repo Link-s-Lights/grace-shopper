@@ -4,23 +4,19 @@ import {Link} from 'react-router-dom'
 export const OrderDetails = props => {
   const {line1, line2, city, state, zip} = props.order.shippingAddress
   const {id, status} = props.order
+  let formatPrice = price =>
+    price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    })
   let subtotal = props.order.products.reduce(
     (acc, product) => acc + product.orderProduct.subtotal,
     0
   )
   const products = props.order.products.map(product => {
     const qty = product.orderProduct.qty
-    const subtotal = product.orderProduct.subtotal.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    })
-    const price = (product.orderProduct.subtotal / qty).toLocaleString(
-      'en-US',
-      {
-        style: 'currency',
-        currency: 'USD'
-      }
-    )
+    const subtotal = formatPrice(product.orderProduct.subtotal)
+    const price = formatPrice(product.orderProduct.subtotal / qty)
     return {
       name: product.name,
       id: product.id,
@@ -29,26 +25,12 @@ export const OrderDetails = props => {
       subtotal
     }
   })
-  const total = (
-    subtotal +
-    props.order.tax +
-    props.order.shippingCost
-  ).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
-  subtotal = subtotal.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
-  const tax = props.order.tax.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
-  const shippingCost = props.order.shippingCost.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
+  const total = formatPrice(
+    subtotal + props.order.tax + props.order.shippingCost
+  )
+  subtotal = formatPrice(subtotal)
+  const tax = formatPrice(props.order.tax)
+  const shippingCost = formatPrice(props.order.shippingCost)
   return (
     <React.Fragment>
       <tr>
