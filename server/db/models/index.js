@@ -24,12 +24,13 @@ Product.belongsToMany(Variation, {through: ProductGroup})
 
 Product.findWithQuery = query => {
   const Op = Sequelize.Op
-  const {sortColumn, direction, keywords, page, size} = query
+  const {sortColumn, showOutOfStock, direction, keywords, page, size} = query
   const offset = (page - 1) * size
   const limit = size
   const order = [[sortColumn, direction], ['name', direction]]
 
-  console.log(order)
+  const outOfStock = showOutOfStock === 'true' ? {} : {stock: {[Op.gt]: 0}}
+  console.log(outOfStock)
 
   if (keywords.length) {
     return Product.findAndCountAll({
@@ -37,6 +38,7 @@ Product.findWithQuery = query => {
       limit,
       offset,
       where: {
+        ...outOfStock,
         name: {
           [Op.iLike]: {
             [Op.any]: `{%${keywords}%}`
@@ -48,7 +50,8 @@ Product.findWithQuery = query => {
   return Product.findAndCountAll({
     order,
     limit,
-    offset
+    offset,
+    where: {...outOfStock}
   })
 }
 

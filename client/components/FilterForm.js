@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import {putUser} from '../store/user'
 
 const INITIAL_STATE = {
-  sortColumn: '',
-  sortOrder: true,
+  sortColumn: 'id',
+  direction: true,
   showOutOfStock: true
 }
 
@@ -18,35 +18,38 @@ class FilterForm extends React.Component {
   }
 
   handleChange(event) {
-    console.log('Event Target: ', event.target)
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-    if (event.target.type === 'radio') {
-      this.setState({
-        [event.target.name]: event.target.id
-      })
-    }
+    const {type, id, name, value} = event.target
 
-    if (event.target.type === 'checkbox') {
-      this.setState({
-        [event.target.name]: !this.state[event.target.name]
-      })
+    switch (type) {
+      case 'radio':
+        this.setState({
+          [name]: id
+        })
+        break
+      case 'checkbox':
+        this.setState(prevState => ({
+          [name]: !prevState[name]
+        }))
+        break
+      default:
+        this.setState({
+          [name]: value
+        })
+        break
     }
   }
 
   handleSubmit(event) {
     event.preventDefault()
     const currentUrlParams = new URLSearchParams(this.props.location.search)
-    console.log('State: ', this.state)
     Object.entries(this.state).forEach(pair => {
-      if (!currentUrlParams.has(pair[0])) {
-        currentUrlParams.append(...pair)
-      } else {
-        currentUrlParams.set(...pair)
+      if (pair[0] === 'direction') {
+        pair[1] = pair[1] ? 'ASC' : 'DESC'
       }
+      !currentUrlParams.has(pair[0])
+        ? currentUrlParams.append(...pair)
+        : currentUrlParams.set(...pair)
     })
-    console.log('Url Params: ', currentUrlParams)
     this.props.history.push(
       window.location.pathname + '?' + currentUrlParams.toString()
     )
@@ -94,13 +97,13 @@ class FilterForm extends React.Component {
                   <input
                     className="btn-check"
                     type="checkbox"
-                    name="sortOrder"
-                    id="sortOrder"
-                    value={state.sortOrder}
+                    name="direction"
+                    id="direction"
+                    value={state.direction}
                     onChange={this.handleChange}
                   />
-                  <label className="btn btn-primary" htmlFor="sortOrder">
-                    {this.state.sortOrder ? (
+                  <label className="btn btn-primary" htmlFor="direction">
+                    {this.state.direction ? (
                       <i className="bi-sort-down-alt" />
                     ) : (
                       <i className="bi-sort-down" />
@@ -121,7 +124,9 @@ class FilterForm extends React.Component {
                   id="showOutOfStock"
                   value={state.showOutOfStock}
                   onChange={this.handleChange}
-                  checked
+                  checked={
+                    this.state.showOutOfStock || this.props.showOutOfStock
+                  }
                 />
                 <label className="form-check-label" htmlFor="showOutOfStock">
                   Show Out Of Stock Items

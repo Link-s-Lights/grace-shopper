@@ -18,8 +18,9 @@ export class AllProducts extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname)
+    if (prevProps.location.search !== this.props.location.search) {
       this.props.getMyProducts(this.props.location.search)
+    }
   }
 
   isInStock(product) {
@@ -125,7 +126,13 @@ export class AllProducts extends React.Component {
         </div>
       )
     } else {
-      return <div>Loading</div>
+      return (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary m-3" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )
     }
   }
 }

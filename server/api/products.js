@@ -14,6 +14,7 @@ router.get('/', async (req, res, next) => {
       keywords: req.query.keywords ? req.query.keywords.split(' ') : [],
       sortColumn: req.query.sortColumn || 'id',
       direction: req.query.direction || 'ASC',
+      showOutOfStock: req.query.showOutOfStock || true,
       page: req.query.page || 1,
       size: req.query.size || 12
     }
