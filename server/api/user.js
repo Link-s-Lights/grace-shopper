@@ -86,8 +86,6 @@ router.put('/checkout', async (req, res, next) => {
       },
       include: Product
     })
-    console.log('current user: ', req.user)
-    console.log('checkout cart products: ', cart.products)
     cart.status = 'pending'
     let outOfStock = false
     cart.products.forEach(product => {
