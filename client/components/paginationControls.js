@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const PaginationControlPages = ({currentPage, maxNumPages}) => {
   let start, end
@@ -28,12 +29,12 @@ const PaginationControlPages = ({currentPage, maxNumPages}) => {
         key={i}
         className={'page-item ' + (i + 1 === currentPage ? 'active' : '')}
       >
-        <a
+        <Link
           className="page-link link-primary"
           href={window.location.pathname + '?' + currentUrlParams.toString()}
         >
           {i + 1}
-        </a>
+        </Link>
       </li>
     )
   }
@@ -42,34 +43,38 @@ const PaginationControlPages = ({currentPage, maxNumPages}) => {
 }
 
 export default function PaginationControls(props) {
-  const currentPage = parseInt(
-    new URLSearchParams(props.location.search).get('page')
-  )
+  const currentUrlParams = new URLSearchParams(window.location.search)
+  const nextPage = new URLSearchParams(window.location.search)
+  const lastPage = new URLSearchParams(window.location.search)
+  const currentPage = parseInt(currentUrlParams.get('page'))
+  nextPage.set('page', currentPage + 1)
+  lastPage.set('page', currentPage - 1)
+
   const maxNumPages = Math.ceil(props.count / props.size)
   return (
     <nav className="justify-content-center" aria-label="Page navigation">
       <ul className="mt-3 pagination justify-content-center">
         <li className="page-item">
-          <a
+          <Link
             className="page-link link-primary"
             aria-label="Previous"
-            href={`/products/?page=${Math.max(1, currentPage - 1)}`}
+            to={window.location.pathname + '?' + lastPage.toString()}
           >
             <i className="bi-caret-left-fill" />
-          </a>
+          </Link>
         </li>
         <PaginationControlPages
           currentPage={currentPage}
           maxNumPages={maxNumPages}
         />
         <li className="page-item">
-          <a
+          <Link
             className="page-link link-primary"
             aria-label="Next"
-            href={`/products/?page=${Math.min(currentPage + 1, maxNumPages)}`}
+            to={window.location.pathname + '?' + nextPage.toString()}
           >
             <i className="bi-caret-right-fill" />
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
