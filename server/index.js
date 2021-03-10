@@ -1,3 +1,6 @@
+const stripe = require('stripe')(
+  'sk_test_51IT9L4CDIyPTIGpp8xQtPQzv17hVQvILCHg1SyoPfdJYJXb2xQKM1vZvhj8f1miqrukFe29ZlEjsUx3xnCYHVuOc000PlLwblp'
+)
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
@@ -79,6 +82,32 @@ const createApp = () => {
     } else {
       next()
     }
+  })
+
+  //STRIPE
+  const YOUR_DOMAIN = 'http://localhost:8080/payment'
+
+  app.post('/payment', async (req, res) => {
+    const sessionStripe = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: "Link's Lights",
+              images: ['https://i.imgur.com/3jnETNw.png']
+            },
+            unit_amount: 2000
+          },
+          quantity: 1
+        }
+      ],
+      mode: 'payment',
+      success_url: `${YOUR_DOMAIN}?success=true`,
+      cancel_url: `${YOUR_DOMAIN}?canceled=true`
+    })
+    res.json({id: sessionStripe.id})
   })
 
   // sends index.html

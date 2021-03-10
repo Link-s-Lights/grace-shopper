@@ -9,6 +9,8 @@ import {
   getCart,
   submitOrder
 } from '../store/cart'
+import {Link} from 'react-router-dom'
+import OrderSubmission from './OrderSubmission'
 
 let selectArray = []
 for (let i = 1; i <= 10; i++) {
@@ -91,9 +93,17 @@ class Cart extends React.Component {
         Subtotal: {/* Put calculation in helper js file */}
         {lineItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
         <div>
-          <button onClick={() => this.props.submitCart(this.props.cart)}>
+          {/* <button
+            type="button"
+            onClick={() => this.props.submitCart(this.props.cart)}
+            id="checkout-button"
+          >
             Checkout
-          </button>
+          </button> */}
+          <OrderSubmission
+            submitCart={this.props.submitCart}
+            cart={this.props.cart}
+          />
         </div>
       </div>
     )
