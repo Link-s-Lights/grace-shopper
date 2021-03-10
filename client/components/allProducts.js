@@ -14,7 +14,12 @@ export class AllProducts extends React.Component {
     this.checkPathAndRedirect = this.checkPathAndRedirect.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.setShow = this.setShow.bind(this)
-    this.state = {qty: 1, show: false, name: ''}
+    this.state = {
+      qty: 1,
+      show: false,
+      name: '',
+      audio: new Audio('/coolsaber.wav')
+    }
   }
 
   async componentDidMount() {
@@ -25,7 +30,9 @@ export class AllProducts extends React.Component {
   async handleAdd(product) {
     try {
       this.props.addToCart(product, this.state.qty)
-
+      if (product.name.toLowerCase().includes('saber')) {
+        this.state.audio.play()
+      }
       this.setShow(product.name)
       await saveCart()
     } catch (err) {

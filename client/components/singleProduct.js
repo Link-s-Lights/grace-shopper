@@ -11,7 +11,7 @@ export class SingleProduct extends React.Component {
     this.isInStock = this.isInStock.bind(this)
     this.updateQty = this.updateQty.bind(this)
     this.setShow = this.setShow.bind(this)
-    this.state = {qty: 1, show: false}
+    this.state = {qty: 1, show: false, audio: new Audio('/coolsaber.wav')}
   }
 
   // Get rid of async/await
@@ -22,8 +22,10 @@ export class SingleProduct extends React.Component {
   // Get rid of async/await
   async handleAdd() {
     try {
-      console.log('qty to add: ', this.state.qty)
       this.props.addToCart(this.props.singleProduct, this.state.qty)
+      if (this.props.singleProduct.name.toLowerCase().includes('saber')) {
+        this.state.audio.play()
+      }
       this.setShow()
       await saveCart()
     } catch (err) {
