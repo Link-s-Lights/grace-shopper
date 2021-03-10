@@ -12,8 +12,16 @@ const INITIAL_STATE = {
 class UserForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = props.user || INITIAL_STATE
-
+    if (props.user) {
+      this.state = {
+        ...props.user,
+        shippingAddresses: [
+          props.user.shippingAddresses[0] || INITIAL_STATE.shippingAddresses[0]
+        ]
+      }
+    } else {
+      this.state = INITIAL_STATE
+    }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
